@@ -1,0 +1,53 @@
+
+    <div class="dashboard-breadcrumb mb-25">
+        <h2>List of User</h2>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="row g-3">
+                        <div class="col-lg-6">
+                            <div class="card">                   
+                                <div class="card-body">
+                                           <div class="table-responsive">
+                                        <table class="table table-dashed recent-order-table" id="myTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>name</th>
+                                                    <th>email</th>
+                                                    <th>mobile</th>
+                                                    <th>status</th>
+                                                    <th>address</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% records.forEach(function(record) { %>
+                                                    <tr>
+                                                        <td><%= record.FullName%></td>
+                                                        <td><%= record.email %></td>
+                                                        <td><%= record.mobile_number%></td>
+                                                        <td><%= record.status %></td>
+                                                        <td><%= record.address %></td>
+                                                        <td>
+                                                            <div class="btn-box">
+                                                                <button><i class="fa-light fa-eye"></i></button>
+                                                                <button><i class="fa-light fa-pen"></i></button>
+                                                                <button><i class="fa-light fa-trash"></i></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+</div>

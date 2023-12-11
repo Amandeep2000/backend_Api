@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {   
+    static associate(models) {
       // define association here
       User.hasOne(models.astrologer_meta, {
         foreignKey: 'user_id',
@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsToMany(models.ExpertiseList,
         {
           through: models.AstrologerExpertise,
-          foreignKey: 'user_id',
-          otherKey: 'expertise_id',
+          foreignKey:'user_id',
+          otherKey:'expertise_id',
           as: 'astrologerexpertise'
         })
+
     }
 
     // hidden fields

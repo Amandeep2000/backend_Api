@@ -1,5 +1,4 @@
 const { DataTypes } = require("sequelize");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("@models/index");
 const { successResponse, errorResponse } = require("@helper/helper"); 
@@ -9,6 +8,7 @@ const { loginvalidetionRules } = require("@AuthValidation/loginvalidation");
 const UserRegisterRules = require("@AuthValidation/UserRegister");
 const AstrologerRegisterRules = require("@AuthValidation/AstrologerRegister");
 const MobileNumberRules = require("@AuthValidation/MobileNumberValidation");
+
 class controllers {
 
   static async UserRegister(req, res) {
@@ -135,38 +135,8 @@ class controllers {
         profile_pic } = req.body
 
 
-
-
-
-
-
-      //   const userData = {
-      //     user_id: user_id,
-      //     is_profile_verified:   is_profile_verified,
-      //     languages:  languages,
-      //     experience:  experience,
-      //     Charges:   experience,
-      //     charge_type: charge_type,
-      //     referral_code: referral_code,
-      //     description: description,
-      //     profile_pic: profile_pic,
-      //   };
-
-
-      // const astrologerUser = await db.astrologer_meta.create({
-      //   user_id: user_id,
-      //   is_profile_verified: is_profile_verified,
-      //   languages: languages,
-      //   experience: experience,
-      //   Charges: Charges,
-      //   charge_type: charge_type,
-      //   referral_code: referral_code,
-      //   description: description,
-      //   profile_pic: profile_pic,
-      // });
-
       
-      const [astrologerUser, created] = await db.astrologer_meta.findOrCreate({
+      const [astrologerUser,created] = await db.astrologer_meta.findOrCreate({
         where: { user_id: user_id },
         defaults: {
           is_profile_verified,
@@ -179,6 +149,7 @@ class controllers {
           profile_pic
         }
       });
+
       if (!created) {
         // The record already exists, so we update it
         await astrologerUser.update({
@@ -197,8 +168,6 @@ class controllers {
 
       const expertiesarray = [];
       const SelectedArray = expertise.split(",");
-
-
       const conditionSelected = SelectedArray.length > 0 ? SelectedArray : [];
 
       conditionSelected.forEach((expId) => {
@@ -257,10 +226,11 @@ class controllers {
   
       res.status(400).json(errorResponse({message:e.message}));
     }
-  }
+  }                                                                
 
 
   static async login(req, res) {
+    
     try {
       //validation
       await Promise.all(

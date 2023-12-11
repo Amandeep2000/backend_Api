@@ -1,0 +1,49 @@
+<div class="dashboard-breadcrumb mb-25">
+    <h2>List of Expertise</h2>
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                    <div class="table-responsive">
+                                    <table class="table table-dashed recent-order-table" id="myTable">
+                                        <thead>
+                                            <tr>
+                                                <th>title</th>
+                                                <th>image</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% records.forEach(function(record) { %>
+                                                <tr>
+                                                    <td><%= record.title%></td>
+                                                    <td>
+                                                        <!-- Display the image using the image URL in the record -->
+                                                        <img src="<%= record.image %>" alt="Image for <%= record.title %>" height="100" width="100">
+                                                      </td>
+                                                          <td>
+                                                        <div class="btn-box">
+                                                            <button><i class="fa-light fa-eye"></i></button>
+                                                            <button><i class="fa-light fa-pen"></i></button>
+                                                            <button><i class="fa-light fa-trash"></i></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

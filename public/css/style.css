@@ -9618,10 +9618,10 @@ pre .punctuation {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 45px;
+  height:0px;
   background: #112143;
   text-align: center;
-  z-index: 12;
+  z-index: 0;
 }
 .footer p {
   font-size: 14px;
@@ -9634,7 +9634,7 @@ pre .punctuation {
 .main-content .ck ul,
 .compose-mail .ck ul,
 .mail-details .ck ul {
-  padding-left: 2rem;
+  padding-left: 1rem;
   list-style: disc;
 }
 .modal .ck-editor,
@@ -11790,7 +11790,7 @@ a.ck.ck-button:focus {
     height: 55px;
   }
   .main-content .recent-order-table {
-    font-size: 12px;
+    font-size: 15px;
     max-width: none;
     min-width: -webkit-max-content !important;
     min-width: -moz-max-content !important;

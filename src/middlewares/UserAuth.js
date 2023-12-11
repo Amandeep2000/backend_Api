@@ -28,9 +28,7 @@ class AuthenticateTokenMiddleware
         }
         
         req.user = user;
-        
-        
-
+      
         next();
       });
     }

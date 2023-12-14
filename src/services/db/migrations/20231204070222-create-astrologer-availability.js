@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Astrologer_Availabilities', {
+    await queryInterface.createTable('astrologer_availabilities', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -33,6 +33,6 @@ module.exports = {
     });
   },
   async down(queryInterface,Sequelize) {
-    await queryInterface.dropTable('Astrologer_Availabilities');
+    await queryInterface.dropTable('astrologer_availabilities');
   }
 };

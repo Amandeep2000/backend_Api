@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      call_schedule1.belongsTo(models.User,{ 
+      call_schedule1.belongsTo(models.users,{ 
         foreignKey:'booked_by',
         as:'booker'
      });

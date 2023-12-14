@@ -23,7 +23,7 @@ class Astrologer_meta {
         is_recommended,
       } = req.body;
 
-      const adduser = await db.User.create({
+      const adduser = await db.users.create({
         user_id: user_id,
         profile_pic: profile_pic,
         description: description,
@@ -69,7 +69,7 @@ class Astrologer_meta {
         ];
       }
 
-      const allRecords = await db.User.findAll({
+      const allRecords = await db.users.findAll({
         where: whereClause,
         order: orderClause,
         include: [
@@ -78,7 +78,7 @@ class Astrologer_meta {
             as: "AstrologerMeta",
           },
           {
-            model: db.ExpertiseList,
+            model: db.expertise_lists,
             as: "astrologerexpertise",
           },
         ],
@@ -95,12 +95,12 @@ class Astrologer_meta {
     }
   }
 
-  static async show(req, res) {
+  static async Astrologer_profile(req, res) {
     try {
       //pending
       const { id } = req.params;
 
-      const RecordById = await db.User.findOne({
+      const RecordById = await db.users.findOne({
         where: { id, user_type:"astrologer" },
         include: [
           {
@@ -108,7 +108,7 @@ class Astrologer_meta {
             as: "AstrologerMeta",
           },
           {
-            model: db.ExpertiseList,
+            model: db.expertise_lists,
             as: "astrologerexpertise",
           },
         ],
@@ -154,7 +154,7 @@ class Astrologer_meta {
       }
 
       // Use the where clause in your findAll query
-      const allRecords = await db.ExpertiseList.findAll({
+      const allRecords = await db.expertise_lists.findAll({
         where: whereClause,
         order: orderClause,
         offset: offset,
@@ -162,7 +162,7 @@ class Astrologer_meta {
       });
 
       // Optionally, you can also add pagination and total record count
-      const totalRecords = await db.ExpertiseList.count({ where: whereClause });
+      const totalRecords = await db.expertise_lists.count({ where: whereClause });
 
       return res.status(200).json(
         successResponse({
@@ -181,7 +181,7 @@ class Astrologer_meta {
     try {
       const user_Id = req.user.user_id;
 
-      const astrologerdata = await db.User.findOne({
+      const astrologerdata = await db.users.findOne({
         where: { id },
       });
 
@@ -227,7 +227,7 @@ class Astrologer_meta {
       const { id } = req.params;
       const user_Id = req.user.user_id;
 
-      const astrologerdata = await db.User.findOne({
+      const astrologerdata = await db.users.findOne({
         where: { id },
       });
 
@@ -256,7 +256,7 @@ class Astrologer_meta {
       const userId = req.user.user_id;
       const { date, times } = req.body;
       const createOperations = times.map((time) => {
-        return db.Astrologer_Availability.create({
+        return db.astrologer_availabilities.create({
           date: date,
           time: time,
           userid: userId,
@@ -276,31 +276,6 @@ class Astrologer_meta {
     }
   }
 
-  static async astrologerAvailability(req, res) {
-    try {
-      const userId = req.user.user_id;
-      const { date, times } = req.body;
-
-      const createOperations = times.map((time) => {
-        return db.Astrologer_Availability.create({
-          date: date,
-          time: time,
-          userid: userId,
-          is_block: false,
-        });
-      });
-      // Await all the create operations
-      const records = await Promise.all(createOperations);
-
-      return res
-        .status(200)
-        .json(
-          successResponse({ message: "updated successfully", data: records })
-        );
-    } catch (e) {
-      res.status(400).json(errorResponse({ message: e.message }));
-    }
-  }
 
   // static async SetAvailability(req, res) {
   //   const userId = req.user.user_id;
@@ -331,7 +306,7 @@ class Astrologer_meta {
   static async getAvailability(req, res) {
     try {
       const { id } = req.params;
-      const getData = await db.Astrologer_Availability.findOne({
+      const getData = await db.astrologer_availabilities.findOne({
         where: { id },
       });
       if (getData) {

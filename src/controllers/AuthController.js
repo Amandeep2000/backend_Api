@@ -30,7 +30,7 @@ class controllers {
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const registerUser = await db.User.create({
+      const registerUser = await db.users.create({
         FullName: FullName,
         email: email,
         mobile_number: mobile_number,
@@ -87,7 +87,7 @@ class controllers {
         mobile_number,
       } = req.body;
 
-      const astrologerRegister = await db.User.create({
+      const astrologerRegister = await db.users.create({
         FullName: FullName,
         email: email,
         mobile_number: mobile_number,
@@ -188,7 +188,7 @@ class controllers {
 
 
 
-  static async getUserByPhoneNumber(req, res) {
+  static async getotp(req, res) {
     try {
 
 
@@ -200,9 +200,7 @@ class controllers {
         return res.status(400).json({ errors: errors.array() });
       }
 
-
       const { mobile_number } = req.body;
-
 
       if (!mobile_number) {
 
@@ -210,8 +208,12 @@ class controllers {
 
       }
 
-      const user = await db.User.findOne({
-        where: { mobile_number: mobile_number },
+      // const user = await db.users.create({
+      //   where: { mobile_number: mobile_number },
+      // });
+
+     const user = await db.users.create({
+         mobile_number: mobile_number ,
       });
 
 
@@ -246,7 +248,7 @@ class controllers {
 
       const {  mobile_number,otp } = req.body;
 
-      const user = await db.User.findOne({
+      const user = await db.users.findOne({
         where: { mobile_number: mobile_number },
       });
 

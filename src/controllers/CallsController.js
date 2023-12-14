@@ -21,7 +21,7 @@ class CallsController {
         return res.status(404).json({ message: "id not found" });
       }
       // Fetch availability data for the given astrologerId
-      const getData = await db.Astrologer_Availability.findOne({
+      const getData = await db.astrologer_availabilities.findOne({
         where: { id: id },
       });
       // If no data is found for the given astrologerId, return an error response
@@ -64,7 +64,7 @@ class CallsController {
         order: orderClause,
         include: [
           {
-            model: db.User,
+            model: db.users,
             as: "booker",
           },
         ],

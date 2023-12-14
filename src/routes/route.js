@@ -13,7 +13,7 @@ app.group("/api", (router) => {
   router.post("/register/Astrologer", AuthController.AstrologerRegister);
   router.post("/register/user", AuthController.UserRegister);
   router.post("/astrologer/astrologerMeta", AuthController.astrologerMeta);
-  router.get("/mobile", AuthController.getUserByPhoneNumber);
+  router.post("/mobile", AuthController.getotp);
   router.post("/login", AuthController.login);
   router.post("/astrologer/call_histroy", CallsController.call_history);
   router.group((afterAuthRouter) => {
@@ -25,7 +25,7 @@ app.group("/api", (router) => {
 
     afterAuthRouter.get("/astrologer/list", AstrologerController.list);
 
-    afterAuthRouter.get("/astrologer/show/:id", AstrologerController.show);
+    afterAuthRouter.get("/astrologer/Astrologerprofile/:id", AstrologerController.Astrologer_profile);
 
     afterAuthRouter.get(
       "/astrologer/ExpertiseList",

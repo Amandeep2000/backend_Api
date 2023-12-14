@@ -39,8 +39,7 @@ app.get('/products', function (req, res) {
   res.json({msg: 'This is CORS-enabled for only example.com.'});
 });
 
-
-app.use(express.static(staticpath));
+// app.use(express.static(staticpath));
 
 app.set('view engine','ejs');
 

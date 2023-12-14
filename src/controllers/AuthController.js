@@ -38,6 +38,7 @@ class controllers {
         status: status,
         // social_identifier: social_identifier,
         user_type: 'user',
+        otp: "222333"
       });
 
       const userMobileNo = registerUser.mobile_number;

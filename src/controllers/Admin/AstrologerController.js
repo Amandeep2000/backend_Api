@@ -30,12 +30,12 @@ class AstrologerController {
             }
             const user_type = { user_type: "astrologer" };
 
-            const allRecords = await db.User.findAll({
+            const allRecords = await db.users.findAll({
                 where: { [Sequelize.Op.and]: [whereClause, user_type] },
                 order: orderClause,
                 include: [
                     { model: db.astrologer_meta, as: "AstrologerMeta" },
-                    { model: db.ExpertiseList, as: "astrologerexpertise" },
+                    { model: db.expertise_lists, as: "astrologerexpertise" },
                 ],
 
             });

@@ -25,10 +25,10 @@ class AuthController {
 
     try {
       
-        let user = await db.Admin.findOne({ where: { email: email } });
+        let user = await db.admins.findOne({ where: { email: email } });
         
         if (!user) {
-            return ApiResponse(res, 401, "Invalid Email Address!");
+            return errorResponse(res, 401, "Invalid Email Address!");
         }
         
         const isPasswordValid = await bcrypt.compare(password, user.password);

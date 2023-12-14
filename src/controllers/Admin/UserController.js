@@ -30,7 +30,7 @@ class UserController
             }
             const user_type = { user_type: "user" };
 
-            const allRecords = await db.User.findAll({
+            const allRecords = await db.users.findAll({
                 where: { [Sequelize.Op.and]: [whereClause, user_type] },
                 order: orderClause
             });

@@ -14,7 +14,8 @@ const sequelize = new Sequelize('Asthasamey', 'postgres', '12345', {
 });
 
 
-async function testconnection() {
+async function testconnection()
+{
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');

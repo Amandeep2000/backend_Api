@@ -192,7 +192,6 @@ class controllers {
     try {
 
 
-
       await Promise.all(MobileNumberRules.map(rule => rule.run(req)));
 
       // Check for validation errors 

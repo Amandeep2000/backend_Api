@@ -5,9 +5,8 @@ const db = require("@models/index");
 const { successResponse, errorResponse } = require("@helper/helper");
 const { check, validationResult } = require("express-validator");
 
-
 class Astrologer_meta {
-  //pending 
+  //pending
   static async Astrologer(req, res) {
     try {
       const {
@@ -38,7 +37,9 @@ class Astrologer_meta {
         is_recommended: is_recommended,
       });
 
-      return res.status(200).json(successResponse({ message: "Success", adduser }));
+      return res
+        .status(200)
+        .json(successResponse({ message: "Success", adduser }));
     } catch (e) {
       return res.status(400).json(errorResponse({ message: e.message }));
     }
@@ -54,7 +55,7 @@ class Astrologer_meta {
       if (order_field && order_sorting) {
         orderClause.push([order_field, order_sorting]);
       } else {
-        orderClause.push(['id', 'DESC']);
+        orderClause.push(["id", "DESC"]);
       }
 
       let whereClause = {
@@ -74,11 +75,11 @@ class Astrologer_meta {
         include: [
           {
             model: db.astrologer_meta,
-            as: 'AstrologerMeta',
+            as: "AstrologerMeta",
           },
           {
             model: db.ExpertiseList,
-            as: 'astrologerexpertise',
+            as: "astrologerexpertise",
           },
         ],
         offset: offset,
@@ -89,7 +90,6 @@ class Astrologer_meta {
         message: "Success",
         data: allRecords,
       });
-
     } catch (e) {
       return res.status(400).json(errorResponse({ message: e.message }));
     }
@@ -101,7 +101,7 @@ class Astrologer_meta {
       const { id } = req.params;
 
       const RecordById = await db.User.findOne({
-        where: { id, user_type: 'astrologer' },
+        where: { id, user_type:"astrologer" },
         include: [
           {
             model: db.astrologer_meta,
@@ -122,10 +122,10 @@ class Astrologer_meta {
         return res.status(400).json(errorResponse({ message: "Invalid User" }));
       }
 
-
-      return res.status(200).json(successResponse({ message: "Profile Show", data: RecordById }));
+      return res
+        .status(200)
+        .json(successResponse({ message: "Profile Show", data: RecordById }));
     } catch (e) {
-
       res.status(400).json(errorResponse({ message: e.message }));
     }
   }
@@ -140,7 +140,7 @@ class Astrologer_meta {
       if (order_field && order_sorting) {
         orderClause.push([order_field, order_sorting]);
       } else {
-        orderClause.push(['id', 'DESC']);
+        orderClause.push(["id", "DESC"]);
       }
 
       let whereClause = {};
@@ -164,17 +164,16 @@ class Astrologer_meta {
       // Optionally, you can also add pagination and total record count
       const totalRecords = await db.ExpertiseList.count({ where: whereClause });
 
-
-      return res.status(200).json(successResponse({
-        message: "Success",
-        data: allRecords,
-      }));
+      return res.status(200).json(
+        successResponse({
+          message: "Success",
+          data: allRecords,
+        })
+      );
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }
-
   }
-
 
   static async ToggelFolllow(req, res) {
     const { id } = req.params;
@@ -182,17 +181,16 @@ class Astrologer_meta {
     try {
       const user_Id = req.user.user_id;
 
-
-
       const astrologerdata = await db.User.findOne({
         where: { id },
       });
 
-      if (!astrologerdata || astrologerdata.user_type !== 'astrologer') {
-
-
-        return res.status(400).json(errorResponse({ message: "Only astrologers can perform this action" }));
-
+      if (!astrologerdata || astrologerdata.user_type !== "astrologer") {
+        return res.status(400).json(
+          errorResponse({
+            message: "Only astrologers can perform this action",
+          })
+        );
       }
       const isFollowing = await db.followers.findOne({
         where: {
@@ -204,14 +202,20 @@ class Astrologer_meta {
       if (isFollowing) {
         await isFollowing.destroy();
 
-        return res.status(200).json(successResponse({ message: "Successfully unfollowed" }));
+        return res
+          .status(200)
+          .json(successResponse({ message: "Successfully unfollowed" }));
       } else {
         const follow = await db.followers.create({
           user_id: id,
           followed_by: user_Id,
         });
 
-        return res.status(200).json(successResponse({ message: "Successfully followed", data: follow }));
+        return res
+          .status(200)
+          .json(
+            successResponse({ message: "Successfully followed", data: follow })
+          );
       }
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
@@ -219,7 +223,6 @@ class Astrologer_meta {
   }
 
   static async ToggleStatus(req, res) {
-
     try {
       const { id } = req.params;
       const user_Id = req.user.user_id;
@@ -228,70 +231,75 @@ class Astrologer_meta {
         where: { id },
       });
 
-      if (!astrologerdata || astrologerdata.user_type !== 'astrologer') {
-
-        return res.status(400).json(errorResponse({ message: "Only astrologers can perform this action" }));
+      if (!astrologerdata || astrologerdata.user_type !== "astrologer") {
+        return res.status(400).json(
+          errorResponse({
+            message: "Only astrologers can perform this action",
+          })
+        );
       }
 
-
-      astrologerdata.status = (astrologerdata.status === 'active') ? 'inactive' : 'active';
+      astrologerdata.status =
+        astrologerdata.status === "active" ? "inactive" : "active";
       await astrologerdata.save();
 
-      return res.status(200).json(successResponse({ message: " status updated successfully" }));
-
-    }
-    catch (e) {
+      return res
+        .status(200)
+        .json(successResponse({ message: " status updated successfully" }));
+    } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }
   }
 
-
   static async astrologerAvailability(req, res) {
     try {
-
       const userId = req.user.user_id;
       const { date, times } = req.body;
-      const createOperations = times.map(time => {
+      const createOperations = times.map((time) => {
         return db.Astrologer_Availability.create({
           date: date,
           time: time,
           userid: userId,
-          is_block: false
-        })
+          is_block: false,
+        });
       });
       // Await all the create operations
       const records = await Promise.all(createOperations);
 
-      return res.status(200).json(successResponse({ message: "updated successfully", data: records }));
+      return res
+        .status(200)
+        .json(
+          successResponse({ message: "updated successfully", data: records })
+        );
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }
-
   }
 
-
-
   static async astrologerAvailability(req, res) {
     try {
-
       const userId = req.user.user_id;
       const { date, times } = req.body;
-      const createOperations = times.map(time => {
+
+      const createOperations = times.map((time) => {
         return db.Astrologer_Availability.create({
           date: date,
           time: time,
           userid: userId,
-          is_block: false
-        })
+          is_block: false,
+        });
       });
       // Await all the create operations
       const records = await Promise.all(createOperations);
 
-      return res.status(200).json(successResponse({ message: "updated successfully", data: records }));
+      return res
+        .status(200)
+        .json(
+          successResponse({ message: "updated successfully", data: records })
+        );
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }
-
   }
 
   // static async SetAvailability(req, res) {
@@ -324,14 +332,56 @@ class Astrologer_meta {
     try {
       const { id } = req.params;
       const getData = await db.Astrologer_Availability.findOne({
-        where: { id }
+        where: { id },
       });
       if (getData) {
-        return res.status(200).json(successResponse({ message: "Data retrieved successfully", data: getData }));
+        return res.status(200).json(
+          successResponse({
+            message: "Data retrieved successfully",
+            data: getData,
+          })
+        );
       } else {
-        return res.status(404).json(errorResponse({ message: "Data not found" }));
+        return res
+          .status(404)
+          .json(errorResponse({ message: "Data not found" }));
       }
     } catch (e) {
+      res.status(500).json(errorResponse({ message: e.message }));
+    }
+  }
+
+  static async Astrologer_aproved_request(req, res) {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      if (!status) {
+        return res.status(400).send({ message: "Status is required" });
+      }
+
+      const validStatuses = ["scheduled","declined","completed"];
+
+      if (!validStatuses.includes(status)) {
+        return res.status(400).send({ message: "Invalid status" });
+      }
+
+      const call = await db.call_schedule1.findOne({ where: { id } });
+
+      if (!call) {
+        return res.status(404).send({ message: "Call not found" });
+      }
+
+      if (call.status === "requested" && validStatuses.includes(status)) {
+        await call.update({ status });
+        return res
+          .status(200)
+          .send({ message: `Call status updated to ${status}` });
+      } else {
+        return res.status(400).send({ message: "Invalid status update" });
+      }
+    }
+    catch (e) {
       res.status(500).json(errorResponse({ message: e.message }));
     }
   }

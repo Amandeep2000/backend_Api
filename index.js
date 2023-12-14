@@ -3,7 +3,7 @@ require("./alias");
 const cors = require('cors');
 const express = require("express");
 const useroute =require("@routes/route");
-// const WebRoutes =require("@routes/WebRoutes");
+const AdminRoutes =require("@routes/admin");
 const bodyParser = require('body-parser');
 var ejsLayouts = require("express-ejs-layouts");
 const path = require('path');
@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use(useroute);
-// app.use(WebRoutes);
+app.use(AdminRoutes);
 
 app.use(function(req, res, next) {
  

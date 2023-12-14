@@ -15,7 +15,7 @@ moduleAlias.addAlias('@middleware',path.join(__dirname, 'src/middlewares'));
 
 // moduleAlias.addAlias('@ ')
 moduleAlias.addAlias('@AuthValidation',path.join(__dirname,'src/validation/AuthValidation'));
-
+moduleAlias.addAlias('@CallsValidation',path.join(__dirname,'src/validation/CallsValidation'));
 
 
 moduleAlias.addAlias('@public',__dirname,'public');

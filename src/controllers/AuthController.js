@@ -201,7 +201,7 @@ class controllers {
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const { mobile_number } = req.body;
+      const { mobile_number } =req.query;
 
       if (!mobile_number) {
 
@@ -209,13 +209,13 @@ class controllers {
 
       }
 
-      // const user = await db.users.create({
-      //   where: { mobile_number: mobile_number },
-      // });
-
-     const user = await db.users.create({
-         mobile_number: mobile_number ,
+      const user = await db.users.findOne({
+        where: { mobile_number: mobile_number },
       });
+
+    //  const user = await db.users.findOne({
+    //      mobile_number: mobile_number ,
+    //   });
 
 
       if (!user) {
@@ -253,7 +253,8 @@ class controllers {
         where: { mobile_number: mobile_number },
       });
 
-      if (!user) {
+      if (!user)
+      {
         return res.status(400).json(errorResponse({message:"Invalid Credentials"}));
       }
 

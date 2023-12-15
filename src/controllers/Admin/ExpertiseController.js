@@ -15,7 +15,7 @@ const { check, validationResult } = require("express-validator");
 
 class ExpertiseController{
 
-    static async ExpertiseList(req, res) {
+    static async expertiseList(req, res) {
         try {
           const { page, limit, search, order_field, order_sorting } = req.query;
     

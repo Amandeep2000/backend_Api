@@ -8,8 +8,8 @@ const mobileNumberExists = async (value) => {
             mobile_number: value,
         },
     });
-    if (existinguser) {
-        throw new Error("Mobile already exist");
+    if (!existinguser) {
+        throw new Error("Mobile number not found in records.");
     }
 };
 

@@ -20,13 +20,12 @@ const app = Router();
 app.use(express.static(staticpath));
 app.group((router) => {
  router.get("/", AuthControllertemp.login);
- 
   router.post("/", AuthControllertemp.loginPost);
   router.group((afterAuthRouter) => {
     afterAuthRouter.use(ejsLayouts);
     afterAuthRouter.get("/list", AstrologerControllertemp.Astrolistlist);
     afterAuthRouter.get("/userlist", UserControllertemp.User_list);
-    afterAuthRouter.get("/expertiselist", ExpertiseController.ExpertiseList);
+    afterAuthRouter.get("/expertiselist", ExpertiseController.expertiseList);
   });
 });
 

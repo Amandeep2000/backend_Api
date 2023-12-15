@@ -113,6 +113,7 @@ class Astrologer_meta {
           },
         ],
       });
+      // expertise
 
       if (!RecordById.AstrologerMeta || !RecordById.astrologerexpertise) {
         return res.status(400).json(errorResponse({ message: "Invalid Data" }));

@@ -175,7 +175,7 @@ class controllers {
         expertiesarray.push({ expertise_id: expId, user_id: user_id });
       });
 
-      const expertiseInserted = await db.AstrologerExpertise.bulkCreate(
+      const expertiseInserted = await db.astrologer_expertises.bulkCreate(
         expertiesarray
       );
 
@@ -203,7 +203,8 @@ class controllers {
 
       const { mobile_number } =req.query;
 
-      if (!mobile_number) {
+      if (!mobile_number)
+      {
 
         return res.status(400).send('Phone number is required');
 
@@ -213,9 +214,6 @@ class controllers {
         where: { mobile_number: mobile_number },
       });
 
-    //  const user = await db.users.findOne({
-    //      mobile_number: mobile_number ,
-    //   });
 
 
       if (!user) {

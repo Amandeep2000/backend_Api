@@ -30,7 +30,8 @@ class AuthController {
         if (!user) {
             return errorResponse(res, 401, "Invalid Email Address!");
         }
-        console.log('amandeep')
+        
+        
         const isPasswordValid = await bcrypt.compare(password, user.password);
         
         if (!isPasswordValid) {

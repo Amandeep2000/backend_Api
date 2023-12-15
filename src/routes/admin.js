@@ -21,11 +21,22 @@ app.use(express.static(staticpath));
 app.group((router) => {
  router.get("/", AuthControllertemp.login);
   router.post("/", AuthControllertemp.loginPost);
-  router.group((afterAuthRouter) => {
+  
+  router.group((afterAuthRouter) =>
+  {
+    
     afterAuthRouter.use(ejsLayouts);
     afterAuthRouter.get("/list", AstrologerControllertemp.Astrolistlist);
     afterAuthRouter.get("/userlist", UserControllertemp.User_list);
     afterAuthRouter.get("/expertiselist", ExpertiseController.expertiseList);
+
+
+
+
+    afterAuthRouter.get('/admin/expertise/create',ExpertiseController.create);
+
+    afterAuthRouter.post("/admin/expertise/create", ExpertiseController.createpost);
+
   });
 });
 

@@ -80,6 +80,7 @@ class Astrologer_meta {
           {
             model: db.expertise_lists,
             as: "astrologerexpertise",
+            
           },
         ],
         offset: offset,

@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       type: {
-        type: Sequelize.ENUM('value','value1')
+        type: Sequelize.STRING
       },
       payment_status: {
         type: Sequelize.STRING

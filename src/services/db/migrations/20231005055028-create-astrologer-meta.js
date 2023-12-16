@@ -38,7 +38,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       charge_type:{
-        type: Sequelize.ENUM('hourly','flat')
+        type: Sequelize.ENUM('hourly','flat','per_minute')
       },
       referral_code:{
         type: Sequelize.STRING

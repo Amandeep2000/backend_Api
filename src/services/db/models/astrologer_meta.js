@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     languages: DataTypes.JSON,
     experience: DataTypes.STRING,
     Charges: DataTypes.INTEGER,
-    charge_type: DataTypes.ENUM('hourly','per_minute'),
+    charge_type: DataTypes.ENUM('hourly','flat'),
     referral_code: DataTypes.STRING,
     is_recommended: DataTypes.BOOLEAN,
   }, {

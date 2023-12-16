@@ -9,16 +9,17 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-const enumName="enum_astrologer_meta_charge_type";
-const tableName="astrologer_meta";
-const columnName="Charges"
+    const enumName = "enum_astrologer_meta_charge_type";
+    const tableName = "astrologer_meta";
+    const columnName = "Charges";
 
-
-await queryInterface.sequelize.transaction(async(transaction)=>{
-await queryInterface.sequelize.query(`ALTER TYPE ${enumName} ADD VALUE 'hourly'`, { transaction });
-await queryInterface.sequelize.query(`ALTER TYPE ${enumName} ADD VALUE 'per_minute'`, { transaction });
-
-})
+    await queryInterface.sequelize.transaction(async (transaction) => {
+     
+      await queryInterface.sequelize.query(
+        `ALTER TYPE ${enumName} ADD VALUE 'flat'`,
+        { transaction }
+      );
+    });
 
   },
 

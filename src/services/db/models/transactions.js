@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
     order_id: DataTypes.INTEGER,
     amount: DataTypes.INTEGER,
-    type: DataTypes.ENUM('value','value1'),
+    type: DataTypes.STRING,
     payment_status: DataTypes.STRING,
     payment_object: DataTypes.JSON
   }, {

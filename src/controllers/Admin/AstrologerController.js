@@ -35,7 +35,7 @@ class AstrologerController {
                 order: orderClause,
                 include: [
                     { model: db.astrologer_meta, as: "AstrologerMeta" },
-                    { model: db.expertise_lists, as: "astrologerexpertise" },
+                    { model: db.expertise, as: "astrologerexpertise" },
                 ],
 
             });

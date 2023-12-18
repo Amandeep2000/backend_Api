@@ -1,6 +1,7 @@
 const { Sequelize, Op, DataTypes } = require("sequelize");
 
 const db = require("@models/index");
+const multer = require('multer');
 
 const { successResponse, errorResponse } = require("@helper/helper");
 const { check, validationResult } = require("express-validator");
@@ -78,7 +79,7 @@ class Astrologer_meta {
             as: "AstrologerMeta",
           },
           {
-            model: db.expertise_lists,
+            model: db.expertise,
             as: "astrologerexpertise",
             
           },
@@ -109,7 +110,7 @@ class Astrologer_meta {
             as: "AstrologerMeta",
           },
           {
-            model: db.expertise_lists,
+            model: db.expertise,
             as: "astrologerexpertise",
           },
         ],
@@ -156,7 +157,7 @@ class Astrologer_meta {
       }
 
       // Use the where clause in your findAll query
-      const allRecords = await db.expertise_lists.findAll({
+      const allRecords = await db.expertise.findAll({
         where: whereClause,
         order: orderClause,
         offset: offset,
@@ -164,7 +165,7 @@ class Astrologer_meta {
       });
 
       // Optionally, you can also add pagination and total record count
-      const totalRecords = await db.expertise_lists.count({ where: whereClause });
+      const totalRecords = await db.expertise.count({ where: whereClause });
 
       return res.status(200).json(
         successResponse({
@@ -255,7 +256,11 @@ class Astrologer_meta {
 
   static async astrologerAvailability(req, res) {
     try {
-      const userId = req.user.user_id;
+      // const userId = req.user.user_id;
+      const userId = req.user?.user_id; // This will set userId to undefined if req.user is not set
+      if (!userId) {
+        return res.status(401).json({ message: "User is not authenticated" });
+      }
       const { date, times } = req.body;
       const createOperations = times.map((time) => {
         return db.astrologer_availabilities.create({
@@ -343,7 +348,7 @@ class Astrologer_meta {
         return res.status(400).send({ message: "Invalid status" });
       }
 
-      const call = await db.call_schedule1.findOne({ where: { id } });
+      const call = await db.call_schedule.findOne({ where: { id } });
 
       if (!call) {
         return res.status(404).send({ message: "Call not found" });
@@ -362,6 +367,22 @@ class Astrologer_meta {
       res.status(500).json(errorResponse({ message: e.message }));
     }
   }
+
+
+
+  static async getMulterStorage(req,res) {
+    
+
+   
+    
+}
+
+
+
+
+
+
+
 }
 
 module.exports = Astrologer_meta;

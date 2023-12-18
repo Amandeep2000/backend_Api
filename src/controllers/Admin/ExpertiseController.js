@@ -35,7 +35,7 @@ class ExpertiseController {
       }
 
       // Use the where clause in your findAll query
-      const allRecords = await db.expertise_lists.findAll({
+      const allRecords = await db.expertise.findAll({
         where: whereClause,
         order: orderClause,
       });
@@ -64,7 +64,7 @@ class ExpertiseController {
 
 
       const { title, image } = req.body;
-      await db.expertise_lists.create({  title, image });
+      await db.expertise.create({  title, image });
       res.redirect('/admin/expertise/create');
 
     } catch (e) {

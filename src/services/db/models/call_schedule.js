@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class call_schedule1 extends Model {
+  class call_schedule extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      call_schedule1.belongsTo(models.users,{ 
+      call_schedule.belongsTo(models.users,{ 
         foreignKey:'booked_by',
         as:'booker'
      });
     }
   }
 
-  call_schedule1.init
+  call_schedule.init
   ({
     user_id: DataTypes.INTEGER,
     booked_by: DataTypes.INTEGER,
@@ -30,10 +30,10 @@ module.exports = (sequelize, DataTypes) => {
   },
   {
     sequelize,
-    modelName: 'call_schedule1',
+    modelName: 'call_schedule',
     tableName:'call_schedule',
     
   });
-  return call_schedule1;
+  return call_schedule;
 };
 

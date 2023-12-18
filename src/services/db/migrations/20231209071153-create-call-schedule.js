@@ -14,6 +14,7 @@ module.exports = {
       },
       booked_by: {
         type: Sequelize.INTEGER,
+        allowNull: true,
         references:{
           model:'users',
           key:'id'

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'AstrologerMeta',
       });
 
-      users.belongsToMany(models.expertise_lists,
+      users.belongsToMany(models.expertise,
         {
           through: models.astrologer_expertises,
           foreignKey:'user_id',
@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'users',
+    tableName:'users',
   });
   return users;
 };

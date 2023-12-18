@@ -11,11 +11,13 @@ class AuthenticateTokenMiddleware
 {
     constructor() {}
     authenticateToken(req, res, next) {
+    
       const token = req.header("Authorization");
       
- 
+      
   if(!token) return res.status(400).json(errorResponse({message:"No token provided"}));
   
+
       if(invalidatedTokens.has(token)){
     
         return res.status(400).json(errorResponse({message:"Token is no longer valid"}));
@@ -29,7 +31,7 @@ class AuthenticateTokenMiddleware
         }
         
         req.user = user;
-      
+     
         next();
       });
     }

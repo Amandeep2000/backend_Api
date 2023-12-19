@@ -152,7 +152,7 @@ class CallsController {
   static async imageuploding(req, res) {
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
-        let type = req.body.type ||'general';
+        let type = req.query.type ||'general';
        
 
         const dir = path.join(__dirname, "../../uploads", type); // Adjust the path as needed
@@ -193,7 +193,7 @@ class CallsController {
             .json({ success: false, message: "No file provided" });
         }
 
-        const filePath = `/uploads/${req.body.type}/${req.file.filename}`;
+        const filePath = `/uploads/${req.query.type}/${req.file.filename}`;
         res.json({ success: true, path: filePath });
 
       } catch (dbError) {

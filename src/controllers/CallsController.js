@@ -1,7 +1,9 @@
 const { Sequelize, Op, DataTypes } = require("sequelize");
 
 const db = require("@models/index");
-
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 const { successResponse, errorResponse } = require("@helper/helper");
 const { check, validationResult } = require("express-validator");
 
@@ -44,14 +46,12 @@ class CallsController {
         status: "requested",
       });
 
-      return res
-        .status(200)
-        .json(
-          successResponse({
-            message: "Call Schedule Work successfully",
-            data: data,
-          })
-        );
+      return res.status(200).json(
+        successResponse({
+          message: "Call Schedule Work successfully",
+          data: data,
+        })
+      );
     } catch (e) {
       res.status(500).json(errorResponse({ message: e.message }));
     }
@@ -147,6 +147,59 @@ class CallsController {
     } catch (e) {
       res.status(500).json(errorResponse({ message: e.message }));
     }
+  }
+
+  static async imageuploding(req, res) {
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        let type = req.body.type ||'general';
+       
+
+        const dir = path.join(__dirname, "../../uploads", type); // Adjust the path as needed
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+
+        // Pass the directory to the callback
+        cb(null, dir);
+      },
+      filename: function (req, file, cb) {
+        // Create a unique filename for the file
+        let newFilename =
+          file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+        cb(null, newFilename);
+      },
+    });
+
+    const upload = multer({ storage: storage }).single("image");
+    upload(req, res, async function (error) {
+      try {
+        if (!req.file) {
+          return res
+            .status(400)
+            .json({ success: false, message: "No file provided" });
+        }
+
+        if (error) {
+          return res
+            .status(500)
+            .json({ success: false, message: error.message });
+        }
+
+        if (!req.file)
+        {
+          return res
+            .status(400)
+            .json({ success: false, message: "No file provided" });
+        }
+
+        const filePath = `/uploads/${req.body.type}/${req.file.filename}`;
+        res.json({ success: true, path: filePath });
+
+      } catch (dbError) {
+        res.status(500).json({ success: false, message: dbError.message });
+      }
+    });
   }
 }
 

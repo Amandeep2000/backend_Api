@@ -1,7 +1,7 @@
 const { Sequelize, Op, DataTypes } = require("sequelize");
 
 const db = require("@models/index");
-const multer = require('multer');
+
 
 const { successResponse, errorResponse } = require("@helper/helper");
 const { check, validationResult } = require("express-validator");
@@ -367,21 +367,6 @@ class Astrologer_meta {
       res.status(500).json(errorResponse({ message: e.message }));
     }
   }
-
-
-
-  static async getMulterStorage(req,res) {
-    
-
-   
-    
-}
-
-
-
-
-
-
 
 }
 

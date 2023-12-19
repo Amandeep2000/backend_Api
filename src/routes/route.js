@@ -10,6 +10,7 @@ const { authenticateToken } = require("@middleware/UserAuth");
 
 const app = Router();
 app.group("/api", (router) => {
+  router.post("/upload", CallsController.imageuploding);
   router.post("/register/Astrologer", AuthController.AstrologerRegister);
   router.post("/register/user", AuthController.UserRegister);
   router.post("/astrologer/astrologerMeta", AuthController.astrologerMeta);
@@ -25,11 +26,20 @@ app.group("/api", (router) => {
 
     afterAuthRouter.get("/astrologer/list", AstrologerController.list);
 
-    afterAuthRouter.get("/astrologer/show/:id",AstrologerController.Astrologer_profile);
+    afterAuthRouter.get(
+      "/astrologer/show/:id",
+      AstrologerController.Astrologer_profile
+    );
 
-    afterAuthRouter.get("/astrologer/ExpertiseList",AstrologerController.ExpertiseList);
+    afterAuthRouter.get(
+      "/astrologer/ExpertiseList",
+      AstrologerController.ExpertiseList
+    );
 
-    afterAuthRouter.post("/astrologer/follow/:id",AstrologerController.ToggelFolllow);
+    afterAuthRouter.post(
+      "/astrologer/follow/:id",
+      AstrologerController.ToggelFolllow
+    );
 
     afterAuthRouter.post(
       "/astrologer/status/:id",

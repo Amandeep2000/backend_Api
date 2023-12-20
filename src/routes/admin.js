@@ -31,7 +31,7 @@ app.group((router) => {
 
   router.group((afterAuthRouter) => {
     afterAuthRouter.use(ejsLayouts);
-    afterAuthRouter.get("/list", AstrologerControllertemp.Astrolistlist);
+    afterAuthRouter.get("/list", AstrologerControllertemp.Astrologer_list);
     afterAuthRouter.get("/userlist", UserControllertemp.User_list);
     afterAuthRouter.get("/expertiselist", ExpertiseController.List);
   });

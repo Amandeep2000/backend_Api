@@ -13,7 +13,7 @@
     <link rel="stylesheet" id="rtlStyle" href="#">
 
 
-
+  
     <body class="light-theme">
         <!-- preloader start -->
         <div class="preloader d-none">
@@ -30,23 +30,20 @@
             <div class="login-body login-body-2">
                 <div class="top d-flex justify-content-between align-items-center">
                     <div class="logo">
-                        <img src="assets/images/logo-black.png" alt="Logo">
+                        <img src="<% process.env.BASEURL %>/images/logo-black.png" alt="Logo">
                     </div>
                     <a href="index.html"><i class="fa-duotone fa-house-chimney"></i></a>
                 </div>
                 <div class="bottom">
                     <form action="/" method="post">
                         <div class="input-group mb-25">
-                            <!-- Email Field -->
                             <input type="email" name="email" class="form-control" placeholder="Email Address" required>
                             <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
                         </div>
                         <div class="input-group mb-20">
-                            <!-- Password Field -->
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
                             <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
                         </div>
-                        <!-- rest of the form -->
                         <button class="btn btn-primary w-100 login-btn">Login</button>
                     </form>
                     <div class="other-option">
@@ -68,3 +65,4 @@
         <script src="assets/vendor/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/main.js"></script>
     </body>
+   

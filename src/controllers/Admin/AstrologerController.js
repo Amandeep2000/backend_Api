@@ -10,7 +10,7 @@ const { check, validationResult } = require("express-validator");
 
 class AstrologerController {
 
-    static async Astrolistlist(req, res) {
+    static async Astrologer_list(req, res) {
         try {
 
             const { page = 1, limit = 10, search, order_field, order_sorting } = req.query;

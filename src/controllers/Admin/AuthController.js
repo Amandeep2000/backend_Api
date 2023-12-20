@@ -22,15 +22,13 @@ class AuthController {
     const secretKey = process.env.TOKENKEY;
     const { email, password } = req.body;
  
-
     try {
-      
+
         let user = await db.admins.findOne({ where: { email: email } });
         
         if (!user) {
             return errorResponse(res, 401, "Invalid Email Address!");
         }
-        
         
         const isPasswordValid = await bcrypt.compare(password, user.password);
         
@@ -38,9 +36,16 @@ class AuthController {
             return errorResponse(res, 401, "Invalid Password!");
         }
         
-        const accessToken = jwt.sign({ user },secretKey);
+
+        const accessToken = jwt.sign({ user },secretKey );
+
+      
 
         const data = { accessToken: accessToken, userInfo: user };
+
+        // return res
+        // .status(200)
+        // .json(successResponse({ message: "Login Sucessfully", data: data }));
 
         return res.redirect('/list'); 
 

@@ -1,10 +1,44 @@
-<form action="/admin/expertise/create" method="post">
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required>
-    
-    <label for="image">Image URL:</label>
-    <input type="text" id="image" name="image">
-    
-    <button type="submit">Add Expertise</button>
+
+
+
+
+
+
+   
+
+
+
+     <body>
+  <form action="/admin/expertise/create" method="post" enctype="multipart/form-data">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required>
+
+     <input type="file" id="image" name="image" required>
+
+      <button type="submit">Add Expertise</button>
   </form>
-  <%- include('./partials/footer'); %>
+</body>
+ 
+
+
+
+
+
+
+
+
+    
+
+
+
+
+  <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="submit" value="Upload Image" name="submit">
+  </form> -->
+
+
+ 
+  
+ 

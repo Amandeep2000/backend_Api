@@ -14,7 +14,7 @@ class AuthenticateTokenMiddleware
     
       const token = req.header("Authorization");
       
-      
+     
   if(!token) return res.status(400).json(errorResponse({message:"No token provided"}));
   
 

@@ -149,24 +149,24 @@ class CallsController {
     }
   }
 
-  static async imageuploding(req, res) {
+  static async imageuploding(req, res)
+  {
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
-        let type = req.query.type ||'general';
+         let type = req.query.type ||'general';
        
 
         const dir = path.join(__dirname, "../../uploads", type); // Adjust the path as needed
         if (!fs.existsSync(dir)) {
           fs.mkdirSync(dir, { recursive: true });
         }
-
+  
         // Pass the directory to the callback
         cb(null, dir);
       },
       filename: function (req, file, cb) {
         // Create a unique filename for the file
-        let newFilename =
-          file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+        let newFilename = file.fieldname + "-" + Date.now() + path.extname(file.originalname);
         cb(null, newFilename);
       },
     });

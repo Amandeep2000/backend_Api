@@ -21,7 +21,7 @@ class AuthController {
   static async loginPost(req,res) {
     const secretKey = process.env.TOKENKEY;
     const { email, password } = req.body;
-    console.log(req.body)
+ 
 
     try {
       
@@ -39,8 +39,11 @@ class AuthController {
         }
         
         const accessToken = jwt.sign({ user },secretKey);
+
         const data = { accessToken: accessToken, userInfo: user };
+
         return res.redirect('/list'); 
+
     } catch (e) {
       console.error(e); // Log the error
       res.render('error', { message: 'An error occurred while trying to log in.' });

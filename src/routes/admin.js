@@ -23,17 +23,18 @@ app.group((router) => {
   router.post("/", AuthControllertemp.loginPost);
 
   //creat expertise
-  router.get("/admin/expertise/create", ExpertiseController.create);
-
-  router.post("/admin/expertise/create", ExpertiseController.createpost);
-
- 
+  
 
   router.group((afterAuthRouter) => {
     afterAuthRouter.use(ejsLayouts);
     afterAuthRouter.get("/list", AstrologerControllertemp.Astrologer_list);
     afterAuthRouter.get("/userlist", UserControllertemp.User_list);
     afterAuthRouter.get("/expertiselist", ExpertiseController.List);
+    
+    afterAuthRouter.get("/admin/expertise/create", ExpertiseController.create);
+
+    afterAuthRouter.post("/admin/expertise/create", ExpertiseController.createpost);
+   
   });
 });
 

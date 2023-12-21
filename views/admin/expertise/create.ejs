@@ -1,44 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form with Upload</title>
+  <style>
+    body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; /* Adjust background color as needed */
+    display: flex;
+    align-items: center;
+    height: 100vh;
+  }
 
+  .form-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 500px; /* You can adjust the width */
+    margin: auto auto auto 0; /* Adjust margin to push form to the left side */
+  }
 
+    .form-box h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
+    .form-group {
+      margin-bottom: 20px;
+    }
 
+    label {
+      display: block;
+      color: #333;
+      margin-bottom: 10px;
+    }
 
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
 
-   
+    .file-input-container {
+      border: 2px dashed #ddd;
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+      position: relative;
+      cursor: pointer;
+    }
 
+    .file-input-container:hover {
+      border-color: #3066BE;
+    }
 
+    input[type="file"] {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
 
-     <body>
-  <form action="/admin/expertise/create" method="post" enctype="multipart/form-data">
-      <label for="title">Title:</label>
-      <input type="text" id="title" name="title" required>
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
 
-     <input type="file" id="image" name="image" required>
+    button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      background-color: #3066BE;
+      color: white;
+      cursor: pointer;
+    }
 
-      <button type="submit">Add Expertise</button>
-  </form>
+    button:hover {
+      background-color: #205493;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="form-box">
+    <h2>Add Expertise</h2>
+    <form action="/admin/expertise/create" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div class="form-group file-input-container">
+        <label for="file-input">+ Single Upload</label>
+        <input type="file" id="file-input" name="image" required>
+      </div>
+      <div class="button-container">
+        <button type="submit">Add Expertise</button>
+      </div>
+    </form>
+  </div>
+
 </body>
- 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-  <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" value="Upload Image" name="submit">
-  </form> -->
-
-
- 
-  
- 
+</html>

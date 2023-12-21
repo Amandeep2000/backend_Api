@@ -53,7 +53,7 @@ class ExpertiseController {
   }
 
   static async create(req, res) {
-    res.render("admin/expertise/create");
+    res.render("admin/expertise/create",{layout:`layout`});
   }
 
   static async createpost(req, res) {
@@ -91,7 +91,7 @@ class ExpertiseController {
           title: req.body.title,
           image: `/uploads/expertise/${req.file.filename}` // Adjust the path as needed
         });
-             res.render("admin/expertise/create");
+             res.render("admin/expertise/create",{layout:`layout`});
         // res.json({ success: true, expertise: expertise });
       } catch (dbError) {
         res.status(500).json({ success: false, message: dbError.message });

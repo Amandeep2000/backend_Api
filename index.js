@@ -43,6 +43,7 @@ app.get("/products", function (req, res) {
 });
 
 // app.use(express.static(staticpath));
+app.set('views', path.join(__dirname, 'views'));
 
 app.set("view engine", "ejs");
 

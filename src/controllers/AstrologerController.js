@@ -178,6 +178,60 @@ class Astrologer_meta {
     }
   }
 
+
+
+
+static async languages_list(req,res)
+{
+
+  try {
+    const { page, limit, search, order_field, order_sorting } = req.query;
+
+    const offset = (page - 1) * limit;
+
+    let orderClause = [];
+    if (order_field && order_sorting) {
+      orderClause.push([order_field, order_sorting]);
+    } else {
+      orderClause.push(["id", "DESC"]);
+    }
+
+    let whereClause = {};
+    if (search) {
+      whereClause = {
+        [Op.or]: [
+          { title: { [Op.like]: `%${search}%` } },
+          // Add other fields here if you want to search in multiple columns
+        ],
+      };
+    }
+
+    // Use the where clause in your findAll query
+    const allRecords = await db.languages.findAll({
+      where: whereClause,
+      order: orderClause,
+      offset: offset,
+      limit: parseInt(limit), // Ensure that limit is a number
+    });
+
+
+    return res.status(200).json(
+      successResponse({
+        message: "Success",
+        data: allRecords,
+      })
+    );
+  } catch (e) {
+    res.status(400).json(errorResponse({ message: e.message }));
+  }
+
+
+
+}
+
+
+
+
   static async ToggelFolllow(req, res) {
     const { id } = req.params;
 

@@ -35,7 +35,10 @@ app.group("/api", (router) => {
       "/astrologer/ExpertiseList",
       AstrologerController.ExpertiseList
     );
-
+    afterAuthRouter.get(
+      "/astrologer/languageslist",
+      AstrologerController.languages_list
+    );
     afterAuthRouter.post(
       "/astrologer/follow/:id",
       AstrologerController.ToggelFolllow

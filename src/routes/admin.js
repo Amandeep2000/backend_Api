@@ -15,6 +15,7 @@ const AstrologerControllertemp = require("@controllers/Admin/AstrologerControlle
 const UserControllertemp = require("@controllers/Admin/UserController");
 const AuthControllertemp = require("@controllers/Admin/AuthController");
 const ExpertiseController = require("@controllers/Admin/ExpertiseController");
+const LanguagesController = require("@controllers/Admin/LanguagesConstroller");
 
 const app = Router();
 app.use(express.static(staticpath));
@@ -29,12 +30,26 @@ app.group((router) => {
     afterAuthRouter.use(ejsLayouts);
     afterAuthRouter.get("/list", AstrologerControllertemp.Astrologer_list);
     afterAuthRouter.get("/userlist", UserControllertemp.User_list);
+
+
+   //expertiseList
+
     afterAuthRouter.get("/expertiselist", ExpertiseController.List);
-    
+
     afterAuthRouter.get("/admin/expertise/create", ExpertiseController.create);
 
     afterAuthRouter.post("/admin/expertise/create", ExpertiseController.createpost);
-   
+
+
+
+    //languages crud
+
+    afterAuthRouter.get("/admin/languages/list",LanguagesController.List);
+
+    afterAuthRouter.get("/admin/languages/create",LanguagesController.create);
+
+    afterAuthRouter.post("/admin/languages/create",LanguagesController.createpost);
+    
   });
 });
 

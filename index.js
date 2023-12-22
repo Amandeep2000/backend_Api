@@ -21,7 +21,7 @@ var corsOptions = {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
 app.use(useroute);
 app.use(AdminRoutes);
 
@@ -43,6 +43,7 @@ app.get("/products", function (req, res) {
 });
 
 // app.use(express.static(staticpath));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.set('views', path.join(__dirname, 'views'));
 
 app.set("view engine", "ejs");

@@ -45,7 +45,7 @@ class ExpertiseController {
 
       return res.render("pages/Expertiselist", {
         layout: `layout`,
-        records: allRecords,
+        expertise: allRecords,
       });
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
@@ -53,13 +53,13 @@ class ExpertiseController {
   }
 
   static async create(req, res) {
-    res.render("admin/expertise/create",{layout:`layout`});
+    res.render("admin/expertise/create", { layout: `layout` });
   }
 
   static async createpost(req, res) {
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
-        let type = 'expertise'; // The folder name for storing expertise images
+        let type = "expertise"; // The folder name for storing expertise images
         const dir = path.join(__dirname, "../../../uploads", type);
 
         if (!fs.existsSync(dir)) {
@@ -80,26 +80,28 @@ class ExpertiseController {
     upload(req, res, async function (error) {
       try {
         if (error) {
-          return res.status(500).json({ success: false, message: error.message });
+          return res
+            .status(500)
+            .json({ success: false, message: error.message });
         }
         if (!req.file) {
-          return res.status(400).json({ success: false, message: "No file provided" });
+          return res
+            .status(400)
+            .json({ success: false, message: "No file provided" });
         }
-  
+
         // Here we're creating a record in the database with the title and image path
         const expertise = await db.expertise.create({
           title: req.body.title,
-          image: `/uploads/expertise/${req.file.filename}` // Adjust the path as needed
+          image: `/uploads/expertise/${req.file.filename}`, // Adjust the path as needed
         });
-             res.render("admin/expertise/create",{layout:`layout`});
+        res.render("admin/expertise/create", { layout: `layout` });
         // res.json({ success: true, expertise: expertise });
-      } catch (dbError) {
-        res.status(500).json({ success: false, message: dbError.message });
+      } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
       }
     });
   }
-
-
 }
 
 module.exports = ExpertiseController;

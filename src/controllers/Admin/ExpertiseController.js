@@ -13,7 +13,7 @@ const { successResponse, errorResponse } = require("@helper/helper");
 const { check, validationResult } = require("express-validator");
 
 class ExpertiseController {
-  static async List(req, res) {
+  static async list(req, res) {
     try {
       const { page, limit, search, order_field, order_sorting } = req.query;
 
@@ -43,7 +43,7 @@ class ExpertiseController {
         order: orderClause,
       });
 
-      return res.render("pages/Expertiselist", {
+      return res.render("admin/expertise/list", {
         layout: `layout`,
         expertise: allRecords,
       });
@@ -81,12 +81,12 @@ class ExpertiseController {
       try {
         if (error) {
           return res
-            .status(500)
+            .status(404)
             .json({ success: false, message: error.message });
         }
         if (!req.file) {
           return res
-            .status(400)
+            .status(404)
             .json({ success: false, message: "No file provided" });
         }
 
@@ -98,10 +98,94 @@ class ExpertiseController {
         res.render("admin/expertise/create", { layout: `layout` });
         // res.json({ success: true, expertise: expertise });
       } catch (e) {
+        res.status(404).json({ success: false, message: e.message });
+      }
+    });
+  }
+
+
+
+
+  static async updateget(req, res) {
+    try {
+      const { id } = req.params;
+      const expertise = await db.expertise.findByPk(id);
+      if (expertise) {
+        return res.render("admin/expertise/update", {
+          expertise:expertise,
+          layout: "layout", // Assuming 'layout' is a template you want to use
+        });
+      } else {
+        return res.status(404).send("Language not found");
+      }
+    } catch (e) {
+      res.status(500).json({ success: false, message: e.message });
+    }
+  }
+  
+  static async updatepost(req, res) {
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        let type = "expertise"; // The folder name for storing expertise images
+        const dir = path.join(__dirname, "../../../uploads", type);
+  
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+  
+        cb(null, dir);
+      },
+      filename: function (req, file, cb) {
+        let newFilename =
+          file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+        cb(null, newFilename);
+      },
+    });
+  
+    const upload = multer({ storage: storage }).single("image");
+  
+    upload(req, res, async function (error) {
+      try {
+        const { id } = req.params; // Assuming you're passing the ID as a URL parameter
+  
+        if (error) {
+          return res
+            .status(500)
+            .json({ success: false, message: error.message });
+        }
+  
+        const updateValues = { title: req.body.title };
+  
+        if (req.file) {
+          updateValues.image = `/uploads/expertise/${req.file.filename}`; // Adjust the path as needed
+        }
+  
+        // Here we're updating a record in the database with the new title and image path
+    const expertise=    await db.expertise.update(updateValues, {
+          where: { id: id },
+        });
+  
+        // Redirect to the list view, or send back a success response
+        res.render("admin/expertise/update", {expertise: expertise, layout: `layout` });
+      } catch (e) {
         res.status(500).json({ success: false, message: e.message });
       }
     });
   }
+  
+
+
+  
+  static async  delete_expertis(req, res) {
+    try {
+      const { id } = req.params;
+      await db.expertise.destroy({ where: { id } });
+      res.json({ success: true, message: "Language deleted successfully" });
+    } catch (e) {
+      res.status(500).json({ success: false, message: e.message });
+    }
+  }
+  
 }
 
 module.exports = ExpertiseController;

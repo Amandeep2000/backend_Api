@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -93,8 +96,8 @@
   </head>
   <body>
     <div class="form-box">
-      <h2>Add Languages</h2>
-      <form action="/admin/languages/create" method="post">
+      <h2>Update Languages</h2>
+      <form action="/admin/languages/update/<%= language.id %>" method="post">
         <div class="form-group">
           <label for="title">Title:</label>
           <input type="text" id="title" name="title" required />
@@ -106,3 +109,7 @@
     </div>
   </body>
 </html>
+
+
+
+

@@ -24,32 +24,64 @@ app.group((router) => {
   router.post("/", AuthControllertemp.loginPost);
 
   //creat expertise
-  
 
   router.group((afterAuthRouter) => {
     afterAuthRouter.use(ejsLayouts);
     afterAuthRouter.get("/list", AstrologerControllertemp.Astrologer_list);
     afterAuthRouter.get("/userlist", UserControllertemp.User_list);
 
+    //expertiseList
 
-   //expertiseList
-
-    afterAuthRouter.get("/expertiselist", ExpertiseController.List);
+    afterAuthRouter.get("/admin/expertise/list", ExpertiseController.list);
 
     afterAuthRouter.get("/admin/expertise/create", ExpertiseController.create);
 
-    afterAuthRouter.post("/admin/expertise/create", ExpertiseController.createpost);
+    afterAuthRouter.post(
+      "/admin/expertise/create",
+      ExpertiseController.createpost
+    );
 
+    afterAuthRouter.get(
+      "/admin/expertise/update/:id",
+      ExpertiseController.updateget
+    );
 
+    afterAuthRouter.post(
+      "/admin/expertise/update/:id",
+      ExpertiseController.updatepost
+    );
+
+    // afterAuthRouter.delete("/admin/expertise/update/:id",ExpertiseController.delete_expertis);
+    afterAuthRouter.delete(
+      "/admin/expertise/update/:id",
+      ExpertiseController.delete_expertis
+    );
 
     //languages crud
 
-    afterAuthRouter.get("/admin/languages/list",LanguagesController.List);
+    afterAuthRouter.get("/admin/languages/list", LanguagesController.List);
 
-    afterAuthRouter.get("/admin/languages/create",LanguagesController.create);
+    afterAuthRouter.get("/admin/languages/create", LanguagesController.create);
 
-    afterAuthRouter.post("/admin/languages/create",LanguagesController.createpost);
-    
+    afterAuthRouter.post(
+      "/admin/languages/create",
+      LanguagesController.createpost
+    );
+
+    afterAuthRouter.get(
+      "/admin/languages/update/:id",
+      LanguagesController.updateget
+    );
+
+    afterAuthRouter.post(
+      "/admin/languages/update/:id",
+      LanguagesController.updatePost
+    );
+
+    afterAuthRouter.delete(
+      "/admin/languages/update/:id",
+      LanguagesController.deleteLanguage
+    );
   });
 });
 

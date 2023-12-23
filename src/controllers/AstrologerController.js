@@ -422,6 +422,27 @@ static async languages_list(req,res)
     }
   }
 
+
+static async customer_support(req,res)
+{
+  try {
+    const { report_type, summary, description } = req.body;
+    const ticket = await db.tickets.create({ report_type: report_type, summary:summary, description: description });
+ 
+
+    return res.status(200).json(
+      successResponse({
+        message: "successfully",
+        data:ticket,
+      })
+    );
+  } catch (e) {
+    res.status(500).json(errorResponse({ message: e.message }));
+  }
+}
+
+
+
 }
 
 module.exports = Astrologer_meta;

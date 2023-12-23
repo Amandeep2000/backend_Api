@@ -1,4 +1,4 @@
-const { Sequelize, Op, DataTypes } = require("sequelize");
+const { Sequelize, Op, DataTypes, where } = require("sequelize");
 
 const db = require("@models/index");
 const multer = require("multer");
@@ -149,6 +149,33 @@ class CallsController {
     }
   }
 
+
+
+
+static async  history(req,res){
+ 
+  try
+  {
+
+    const history = await db.call_schedule.findAll({
+      order: [['datetime', 'DESC']] // Correct column name
+    });
+
+    return res.status(200).json(
+      successResponse({
+        message: "Work successfully",
+        data: history,
+      })
+    )
+
+  }catch(e)
+  {
+    res.status(500).json(errorResponse({ message: e.message }));
+  }
+}
+
+
+
   static async imageuploding(req, res)
   {
     const storage = multer.diskStorage({
@@ -201,6 +228,10 @@ class CallsController {
       }
     });
   }
+
+
+
+
 }
 
 module.exports = CallsController;

@@ -65,6 +65,12 @@ app.group("/api", (router) => {
       AstrologerController.Astrologer_aproved_request
     );
 
+
+    afterAuthRouter.post(
+      "/astrologer/customer_support",
+      AstrologerController.customer_support
+    );
+
     afterAuthRouter.post(
       "/astrologer/schedule_call",
       CallsController.schedule_call
@@ -78,6 +84,11 @@ app.group("/api", (router) => {
     afterAuthRouter.get(
       "/astrologer/user_review/:id",
       CallsController.user_review
+    );
+
+    afterAuthRouter.get(
+      "/astrologer/history",
+      CallsController.history
     );
   });
 });

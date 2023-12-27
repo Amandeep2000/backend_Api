@@ -16,12 +16,14 @@ module.exports = (sequelize, DataTypes) => {
 
       users.belongsToMany(models.expertise, {
         through: models.astrologer_expertises,
-        foreignKey: "user_id",
-        otherKey: "expertise_id",
+        foreignKey:"user_id",
+        otherKey:"expertise_id",
         as: "astrologerexpertise",
       });
-    }
 
+
+    }
+     
     // hidden fields
     toJSON() {
       const attributes = { ...this.get() };

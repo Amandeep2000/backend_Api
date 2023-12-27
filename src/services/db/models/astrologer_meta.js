@@ -19,6 +19,14 @@ module.exports = (sequelize, DataTypes) => {
   //   otherKey:'expertise_id',
   //   as:'astrologerexpertise'
   // })
+  // AstrologerMeta model
+  // User model
+
+  // astrologer_meta.belongsTo(sequelize.models.users, { foreignKey: ' user_id' });
+ 
+
+
+
 
     }
   }

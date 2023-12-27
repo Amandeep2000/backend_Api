@@ -2,7 +2,6 @@ const { Sequelize, Op, DataTypes } = require("sequelize");
 
 const db = require("@models/index");
 
-
 const { successResponse, errorResponse } = require("@helper/helper");
 const { check, validationResult } = require("express-validator");
 
@@ -81,7 +80,6 @@ class Astrologer_meta {
           {
             model: db.expertise,
             as: "astrologerexpertise",
-            
           },
         ],
         offset: offset,
@@ -103,7 +101,7 @@ class Astrologer_meta {
       const { id } = req.params;
 
       const RecordById = await db.users.findOne({
-        where: { id, user_type:"astrologer" },
+        where: { id, user_type: "astrologer" },
         include: [
           {
             model: db.astrologer_meta,
@@ -178,59 +176,47 @@ class Astrologer_meta {
     }
   }
 
+  static async languages_list(req, res) {
+    try {
+      const { page, limit, search, order_field, order_sorting } = req.query;
 
+      const offset = (page - 1) * limit;
 
+      let orderClause = [];
+      if (order_field && order_sorting) {
+        orderClause.push([order_field, order_sorting]);
+      } else {
+        orderClause.push(["id", "DESC"]);
+      }
 
-static async languages_list(req,res)
-{
+      let whereClause = {};
+      if (search) {
+        whereClause = {
+          [Op.or]: [
+            { title: { [Op.like]: `%${search}%` } },
+            // Add other fields here if you want to search in multiple columns
+          ],
+        };
+      }
 
-  try {
-    const { page, limit, search, order_field, order_sorting } = req.query;
+      // Use the where clause in your findAll query
+      const allRecords = await db.languages.findAll({
+        where: whereClause,
+        order: orderClause,
+        offset: offset,
+        limit: parseInt(limit), // Ensure that limit is a number
+      });
 
-    const offset = (page - 1) * limit;
-
-    let orderClause = [];
-    if (order_field && order_sorting) {
-      orderClause.push([order_field, order_sorting]);
-    } else {
-      orderClause.push(["id", "DESC"]);
+      return res.status(200).json(
+        successResponse({
+          message: "Success",
+          data: allRecords,
+        })
+      );
+    } catch (e) {
+      res.status(400).json(errorResponse({ message: e.message }));
     }
-
-    let whereClause = {};
-    if (search) {
-      whereClause = {
-        [Op.or]: [
-          { title: { [Op.like]: `%${search}%` } },
-          // Add other fields here if you want to search in multiple columns
-        ],
-      };
-    }
-
-    // Use the where clause in your findAll query
-    const allRecords = await db.languages.findAll({
-      where: whereClause,
-      order: orderClause,
-      offset: offset,
-      limit: parseInt(limit), // Ensure that limit is a number
-    });
-
-
-    return res.status(200).json(
-      successResponse({
-        message: "Success",
-        data: allRecords,
-      })
-    );
-  } catch (e) {
-    res.status(400).json(errorResponse({ message: e.message }));
   }
-
-
-
-}
-
-
-
 
   static async ToggelFolllow(req, res) {
     const { id } = req.params;
@@ -337,7 +323,6 @@ static async languages_list(req,res)
     }
   }
 
-
   // static async SetAvailability(req, res) {
   //   const userId = req.user.user_id;
   //   const { date, time } = req.body;
@@ -396,7 +381,7 @@ static async languages_list(req,res)
         return res.status(400).send({ message: "Status is required" });
       }
 
-      const validStatuses = ["scheduled","declined","completed"];
+      const validStatuses = ["scheduled", "declined", "completed"];
 
       if (!validStatuses.includes(status)) {
         return res.status(400).send({ message: "Invalid status" });
@@ -416,33 +401,29 @@ static async languages_list(req,res)
       } else {
         return res.status(400).send({ message: "Invalid status update" });
       }
-    }
-    catch (e) {
+    } catch (e) {
       res.status(500).json(errorResponse({ message: e.message }));
     }
   }
 
-
-static async customer_support(req,res)
-{
-  try {
-    const { report_type, summary, description } = req.body;
-    const ticket = await db.tickets.create({ report_type: report_type, summary:summary, description: description });
- 
-
-    return res.status(200).json(
-      successResponse({
-        message: "successfully",
-        data:ticket,
-      })
-    );
-  } catch (e) {
-    res.status(500).json(errorResponse({ message: e.message }));
+  static async customer_support(req, res) {
+    try {
+      const { report_type, summary, description } = req.body;
+      const ticket = await db.tickets.create({
+        report_type: report_type,
+        summary: summary,
+        description: description,
+      });
+      return res.status(200).json(
+        successResponse({
+          message: "successfully",
+          data: ticket,
+        })
+      );
+    } catch (e) {
+      res.status(500).json(errorResponse({ message: e.message }));
+    }
   }
-}
-
-
-
 }
 
 module.exports = Astrologer_meta;

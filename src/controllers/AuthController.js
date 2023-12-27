@@ -167,7 +167,6 @@ class controllers {
       );
 
       res.status(200).json(successResponse({ message: "Profile updated !" }));
-      
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }

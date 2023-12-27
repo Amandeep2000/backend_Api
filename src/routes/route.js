@@ -4,7 +4,10 @@ require("express-group-routes");
 const express = require("express");
 const AuthController = require("@controllers/AuthController");
 const AstrologerController = require("@controllers/AstrologerController");
+
 const CallsController = require("@controllers/CallsController");
+
+const Usercontroller = require("@controllers/Usercontroller");
 
 const { authenticateToken } = require("@middleware/UserAuth");
 
@@ -65,7 +68,6 @@ app.group("/api", (router) => {
       AstrologerController.Astrologer_aproved_request
     );
 
-
     afterAuthRouter.post(
       "/astrologer/customer_support",
       AstrologerController.customer_support
@@ -86,10 +88,9 @@ app.group("/api", (router) => {
       CallsController.user_review
     );
 
-    afterAuthRouter.get(
-      "/astrologer/history",
-      CallsController.history
-    );
+    afterAuthRouter.get("/user/history", Usercontroller.history);
+    afterAuthRouter.post("/user/chatroom", Usercontroller.chat_rooms);
+    afterAuthRouter.get("/user/chatroom/list", Usercontroller.chat_room_list);
   });
 });
 

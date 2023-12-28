@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       mobile_number: DataTypes.STRING,
       is_verified: DataTypes.BOOLEAN,
       otp: DataTypes.STRING,
-      status: DataTypes.ENUM("active", "inactive", "suspended"),
+      status: DataTypes.ENUM("active","inactive","suspended"),
       social_identifier: DataTypes.STRING,
       user_type: DataTypes.ENUM("user", "astrologer", "admin"),
     },

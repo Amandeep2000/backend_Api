@@ -124,15 +124,60 @@ class Usercontroller {
       });
 
 
-      return res.status(200).json({
-        message: "Success",
-        data: data ,
-      });
+      
+
+      return res.status(200).json(
+        successResponse({
+          message: "Success",
+          data: data,
+        })  
+      )
       
     } catch (e) {
       res.status(500).json(errorResponse({ message: e.message }));
     }
   }
+
+
+ //  banners list 
+ static async list(req, res) {
+  try 
+  {
+
+    const { page, limit, order_field, order_sorting } = req.query;
+
+    const offset = (page - 1) * limit;
+
+    let orderClause = [];
+    if (order_field && order_sorting) {
+      orderClause.push([order_field, order_sorting]);
+    } else {
+      orderClause.push(["id", "DESC"]);
+    }
+
+
+    const  banner = await db.banners.findAll();
+
+    return res.status(200).json(
+      successResponse({
+        message: "banners list ",
+        data:  banner,
+      })  
+    )
+  
+  } catch (e) {
+    res.status(500).json({
+      success: false,
+      message: e.message
+    });
+  }
+}
+
+
+
+
+
+
 }
 
 module.exports = Usercontroller;

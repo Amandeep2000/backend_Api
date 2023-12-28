@@ -17,6 +17,8 @@ const AuthControllertemp = require("@controllers/Admin/AuthController");
 const ExpertiseController = require("@controllers/Admin/ExpertiseController");
 const LanguagesController = require("@controllers/Admin/LanguagesConstroller");
 
+const BannerController = require("@controllers/Admin/BannerController");
+
 const app = Router();
 app.use(express.static(staticpath));
 app.group((router) => {
@@ -82,6 +84,32 @@ app.group((router) => {
       "/admin/languages/update/:id",
       LanguagesController.deleteLanguage
     );
+
+    //crud banner
+
+    afterAuthRouter.get("/admin/banners/create", BannerController.create);
+    afterAuthRouter.post("/admin/banners/create", BannerController.createpost);
+    afterAuthRouter.get("/admin/banners/list", BannerController.list);
+
+    afterAuthRouter.get(
+      "/admin/banners/update/:id",
+      BannerController.updateget
+    );
+
+    afterAuthRouter.post(
+      "/admin/banners/update/:id",
+      BannerController.update
+    );
+
+
+    afterAuthRouter.delete(
+      "/admin/banners/update/:id",
+      BannerController. delete_banner
+    );
+    // delete_banner
+
+
+
   });
 });
 

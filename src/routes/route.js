@@ -91,6 +91,13 @@ app.group("/api", (router) => {
     afterAuthRouter.get("/user/history", Usercontroller.history);
     afterAuthRouter.post("/user/chatroom", Usercontroller.chat_rooms);
     afterAuthRouter.get("/user/chatroom/list", Usercontroller.chat_room_list);
+
+
+//banner crud
+    afterAuthRouter.get("/user/banner/list", Usercontroller.list); 
+
+
+
   });
 });
 

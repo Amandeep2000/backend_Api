@@ -351,9 +351,10 @@ class Astrologer_meta {
 
   static async getAvailability(req, res) {
     try {
-      const { id } = req.params;
-      const getData = await db.astrologer_availabilities.findOne({
-        where: { id },
+      
+      const {id} = req.params;
+      const getData = await db.astrologer_availabilities.findAll({
+        where: {userid:id},
       });
       if (getData) {
         return res.status(200).json(

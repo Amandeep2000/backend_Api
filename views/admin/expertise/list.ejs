@@ -1,7 +1,8 @@
 <div class="dashboard-breadcrumb mb-25">
     <h2>List of Expertise</h2>
-
-</div>
+    
+ <a href="/admin/expertise/create" target="_blank" class="btn btn-sm btn-primary site-view-btn"><span>create</span> <i class="fa fa-plus-circle create-icon"></i></a>
+ </div>
 <div class="row">
     <div class="col-12">
         <div class="panel">
@@ -17,7 +18,7 @@
                                                 <th>title</th>
                                                 <th>image</th>
                                             </tr>
-                                        </thead>
+                                        </thead>                                   
                                         <tbody>
                                             <% expertise.forEach(function( expert) { %>
                                                 <tr>
@@ -27,8 +28,10 @@
                                                     <img src="<%= expert.image %>" alt="Image for <%= expert.title %>" height="100" width="100">
                                                       </td>
                                                           <td>
-                                                        <div class="btn-box">
                                                           
+                                                        <div class="btn-box">
+                                                         
+                                                      
                                                             <a href="/admin/expertise/update/<%= expert.id %>">
                                                                 <i class="fa-light fa-pen"></i>
                                                               </a>

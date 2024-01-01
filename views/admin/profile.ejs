@@ -1,0 +1,167 @@
+
+
+
+  
+    <!-- main content start -->
+
+        <div class="dashboard-breadcrumb mb-25">
+            <h2>View Profile</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="profile-sidebar">
+                          <!-- ... other code ... -->
+                      
+                          <div class="top">
+                            <div class="image-wrap">
+                              <div class="part-img rounded-circle overflow-hidden">
+                                <% if (astrologer.AstrologerMeta.profile_pic) { %>
+                                  <img src="<%= astrologer.AstrologerMeta.profile_pic %>" alt="Profile Image" height="100" width="100">
+                                <% } else { %>
+                                  <img src="public/images/default-profile.png" alt="Default Profile Image" height="100" width="100">
+                                <% } %>
+                              </div>
+                              <button class="image-change"><i class="fa-light fa-camera"></i></button>
+                            </div>
+                            <div class="part-txt">
+                              <h4 class="admin-name"><%= astrologer.name %></h4>
+                              <span class="admin-role"><%= astrologer.AstrologerMeta.role %></span>
+                              <!-- Social Links -->
+                              <% /* Add dynamic social links if available in astrologer.AstrologerMeta */ %>
+                            </div>
+                          </div>
+                      
+                          <div class="bottom">
+                            <h6 class="profile-sidebar-subtitle">Communication Info</h6>
+                            <ul>
+                              <li><span>Name:</span><%= astrologer.FullName %></li>
+                              <li><span>Mobile:</span><%= astrologer.mobile_number %></li>
+                              <li><span>Mail:</span><%= astrologer.email %></li>
+                              <li><span>languages:</span><%=astrologer.AstrologerMeta.languages %></li>
+                              <li><span>experience:</span><%=astrologer.AstrologerMeta.experience%></li>
+                              <li><span>Charges:</span><%=astrologer.AstrologerMeta.Charges%></li>
+                              <li><span> charge_type:</span><%=astrologer.AstrologerMeta.charge_type%></li>
+                              <li><span> referral_code:</span><%=astrologer.AstrologerMeta.referral_code%></li>
+                           
+                            </ul>   
+                            <h6 class="profile-sidebar-subtitle">About Me</h6>
+                            <p><%= astrologer.AstrologerMeta.description %></p>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row mb-25">
+                    <div class="col-lg-4">
+                        <div class="dashboard-top-box rounded-bottom panel-bg">
+                            <div class="left">
+                                <h3>$34,152</h3>
+                                <p>Shipping fees are not</p>
+                                <a href="#">View net earnings</a>
+                            </div>
+                            <div class="right">
+                                <span class="text-primary">+16.24%</span>
+                                <div class="part-icon rounded">
+                                    <span><i class="fa-light fa-dollar-sign"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-6 col-xs-12">
+                        <div class="dashboard-top-box rounded-bottom panel-bg">
+                            <div class="left">
+                                <h3>36,894</h3>
+                                <p>Orders</p>
+                                <a href="#">Excluding orders in transit</a>
+                            </div>
+                            <div class="right">
+                                <span class="text-primary">+16.24%</span>
+                                <div class="part-icon rounded">
+                                    <span><i class="fa-light fa-bag-shopping"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-6 col-xs-12">
+                        <div class="dashboard-top-box rounded-bottom panel-bg">
+                            <div class="left">
+                                <h3>$34,152</h3>
+                                <p>Customers</p>
+                                <a href="#">See details</a>
+                            </div>
+                            <div class="right">
+                                <span class="text-primary">+16.24%</span>
+                                <div class="part-icon rounded">
+                                    <span><i class="fa-light fa-user"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>List of Expertise</h2>
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-sm btn-primary">View All</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div class="row g-3">
+                                        <div class="col-lg-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                        <div class="table-responsive">
+                                                        <table class="table table-dashed recent-order-table" id="myTable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>title</th>
+                                                                    <th>image</th>
+                                                                </tr>
+                                                            </thead>                                   
+                                                            <tbody>
+                                                                <% astrologer.astrologerexpertise.forEach(function( expert) { %>
+                                                                    <tr>
+                                                                        <td><%=expert.title%></td>
+                                                                        <td>
+                                                                            <!-- Display the image using the image URL in the record -->
+                                                                        <img src="<%= expert.image %>" alt="Image for <%= expert.title %>" height="50" width="50">
+                                                                          </td>
+                                                                              <td>
+                                                                              
+                                                                            <div class="btn-box">
+                                                                
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                <% }); %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer start -->
+        <div class="footer">
+            <p>Copyright© <script>document.write(new Date().getFullYear())</script> All Rights Reserved By <span class="text-primary">Digiboard</span></p>
+        </div>
+        <!-- footer end -->
+    </div>
+    <!-- main content end -->
+

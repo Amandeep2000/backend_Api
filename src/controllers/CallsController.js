@@ -22,10 +22,14 @@ class CallsController {
         return res.status(401).json({ message: "User is not authenticated" });
       }
 
-      const { astrologerid, id } = req.body;
+      const { astrologerid, id, type } = req.body;
 
       if (!id) {
         return res.status(404).json({ message: "id not found" });
+      }
+
+      if (!type || (type !== "chat" && type !== "call")) {
+        return res.status(400).json({ message: "Invalid or missing type" });
       }
 
       const getData = await db.astrologer_availabilities.findOne({
@@ -43,6 +47,7 @@ class CallsController {
         datetime: getData.id,
         booked_by: userId,
         status: "requested",
+        type: type,
       });
 
       return res.status(200).json(
@@ -74,6 +79,11 @@ class CallsController {
           {
             model: db.users,
             as: "booker",
+          },
+          {
+            model: db.astrologer_availabilities,
+            as: "astrologer_availabilities",
+            attributes: ["date", "time"],
           },
         ],
         offset: offset,

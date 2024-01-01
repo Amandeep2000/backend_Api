@@ -26,6 +26,10 @@ module.exports = {
       status: {
         type: Sequelize.ENUM("requested", "scheduled", "declined", "completed"),
       },
+      type:{
+        type: Sequelize.STRING,
+       
+      },
       call_duration: {
         type: Sequelize.INTEGER,
       },

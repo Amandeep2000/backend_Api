@@ -30,6 +30,7 @@ app.group((router) => {
   router.group((afterAuthRouter) => {
     afterAuthRouter.use(ejsLayouts);
     afterAuthRouter.get("/list", AstrologerControllertemp.Astrologer_list);
+    afterAuthRouter.post("/list", AstrologerControllertemp. toggle_astrologer_blocking);
     afterAuthRouter.get("/userlist", UserControllertemp.User_list);
 
     //expertiseList
@@ -108,9 +109,17 @@ app.group((router) => {
     );
     // delete_banner
 
+  //astrologer profile
+  afterAuthRouter.get("/adimn/profile/:id", AstrologerControllertemp.getprofile);  
+
 
 
   });
 });
+
+
+
+
+
 
 module.exports = app;

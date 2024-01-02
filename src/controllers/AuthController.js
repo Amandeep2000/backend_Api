@@ -244,18 +244,37 @@ class controllers {
         process.env.TOKENKEY
       );
 
-      const data = {
-        Acesstoken: token,
-        userinfo: user,
-      };
+      if (user.user_type === "astrologer") {
+        // Fetch astrologer meta data
+        const astrologerMeta = await db.astrologer_meta.findOne({
+          where: { user_id: user.id },
+        });
 
-      return res
-        .status(200)
-        .json(successResponse({ message: "Login Sucessfully", data: data }));
+        // Include astrologer meta data in the response
+        const data = {
+          Acesstoken: token,
+          userinfo: user,
+          astrologerMeta: astrologerMeta, // Add this line
+        };
+
+        return res
+          .status(200)
+          .json({ message: "Login Successfully", data: data });
+      } else if (user.user_type === "user") {
+        const data = {
+          Acesstoken: token,
+          userinfo: user,
+        };
+        return res
+          .status(200)
+          .json({ message: "Login Successfully", data: data });
+      }
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }
   }
+
+
 
   static logout(req, res) {
     const secretKey = process.env.TOKENKEY;

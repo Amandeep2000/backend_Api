@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Payment</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #b7b0eb; /* Black background */
+      }
+      #paymentButton {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #paymentButton:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+
+    <button id="paymentButton">Pay Now <%= amount %></button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha512.js"></script>
+    <script src="https://jssdk.payu.in/bolt/bolt.min.js"></script>
+    <!-- Payment handling script goes here -->
+    <script>
+      // ... Your existing JavaScript for handling the payment ...
+      function handleSubmit() {
+        document.getElementById("paymentButton").addEventListener("click", async function (e) {
+      e.preventDefault();
+
+      try {
+        // You should have a way to get the payment token and amount
+        const paymentToken ="<%= token %>";
+        const paymentAmount ="<%= amount %>"; 
+        
+        const response = await fetch(`/api/payment?token=${encodeURIComponent(paymentToken)}&amount=${encodeURIComponent(paymentAmount)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token: paymentToken,
+            amount: paymentAmount,
+          }),
+        });
+        
+        const data = await response.json();
+
+        if (data.success) {
+          console.log("Payment successful");
+          return  alert("Payment successful")
+        } else {
+          return   alert("Payment Error: " + data.message);
+        }
+      } catch (err) {
+        console.error("Error: " + err.message);
+        return alert("Error: " + err.message);
+      }
+
+
+        })
+        
+
+
+        window.close();
+        return;
+        const date = new Date().toGMTString();
+        const key = "O15vkB";
+        const txnid = "mtx" + new Date().getTime();
+        const amount = "<%= amount %>";
+        const phone = "1234567890";
+        const firstname = "surbhi";
+        const lastname = "soni";
+        const email = "test@example.com";
+        const salt = "LU1EhObh";
+        const udf1 = "";
+        const udf2 = "";
+        const udf3 = "";
+        const udf4 = "";
+        const udf5 = "";
+        const isCheckoutExpress = true;
+        const icp_source = "express";
+        const productinfo = "EXPRESS";
+        const surl = "http://pp42.thirdparty.com/testresponse.php"; // success URL
+        const furl = "http://pp42.thirdparty.com/testresponse.php"; // fail URL
+
+        const cart_details = {
+          amount: "<%= amount %>",
+          items: 1,
+          sku_details: [
+            {
+              offer_key: [],
+              amount_per_sku: "<%= amount %>",
+              quantity: "1",
+              sku_id: "amount",
+              sku_name: "Earbuds",
+              logo: "https://payu.in/demo/checkoutExpress/utils/images/MicrosoftTeams-image%20(31).png", // makeit wish logo url
+            },
+          ],
+        };
+        const hashString =
+          key +
+          "|" +
+          txnid +
+          "|" +
+          amount +
+          "|" +
+          productinfo +
+          "|" +
+          firstname +
+          "|" +
+          email +
+          "|" +
+          udf1 +
+          "|" +
+          udf2 +
+          "|" +
+          udf3 +
+          "|" +
+          udf4 +
+          "|" +
+          udf5 +
+          "||||||" +
+          salt;
+        const hash = CryptoJS.SHA512(hashString).toString(CryptoJS.enc.Hex);
+        const expressData = {
+          key: key,
+          hash: hash,
+          txnid: txnid,
+          amount: amount,
+          phone: phone,
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+          salt: salt,
+          udf1: udf1,
+          udf2: udf2,
+          udf3: udf3,
+          udf4: udf4,
+          udf5: udf5,
+          isCheckoutExpress: true,
+          icp_source: "express",
+          productinfo: "EXPRESS",
+          surl: surl,
+          furl: furl,
+          orderid: "<%= orderId %>",
+          cart_details: cart_details,
+        };
+        const AUTH_TYPE = "sha512";
+        const data = JSON.stringify(expressData);
+        const hash_string = data + "|" + date + "|" + salt;
+        const v2hash = CryptoJS.SHA512(hash_string).toString(CryptoJS.enc.Hex);
+        const authHeader =
+          'hmac username="' +
+          key +
+          '", ' +
+          'algorithm="' +
+          AUTH_TYPE +
+          '", headers="date", signature="' +
+          v2hash +
+          '"';
+        const expressRequestObj = {
+          data: data,
+          date: date,
+          isCheckoutExpress: true,
+          v2Hash: authHeader,
+        };
+        var handlers = {
+          responseHandler: function (BOLT) {
+            console.log(BOLT.response);
+            if (BOLT.response.txnStatus == "SUCCESS") {
+              alert("success");
+              console.log("Your payment has been successful");
+            }
+            if (BOLT.response.txnStatus == "FAILED") {
+              alert("failed");
+              console.log("Payment failed. Please try again.");
+            }
+            if (BOLT.response.txnStatus == "CANCEL") {
+              alert("canceled");
+              console.log("Payment failed. Please try again.");
+            }
+          },
+          catchException: function (BOLT) {
+            console.log(BOLT);
+            console.log("Payment failed. Please try again.");
+          },
+        };
+        bolt.launch(expressRequestObj, handlers);
+      }
+      handleSubmit();
+      //   $(document).on("click", "#submit", function () {
+      //   });
+    </script>
+  </body>
+</html>

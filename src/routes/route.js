@@ -1,5 +1,5 @@
 const { Router } = require("express");
-
+const cors = require("cors");
 require("express-group-routes");
 const express = require("express");
 const AuthController = require("@controllers/AuthController");
@@ -8,7 +8,7 @@ const AstrologerController = require("@controllers/AstrologerController");
 const CallsController = require("@controllers/CallsController");
 
 const Usercontroller = require("@controllers/Usercontroller");
-
+const PaymentController = require("@controllers/payment/PaymentController");
 
 const { authenticateToken } = require("@middleware/UserAuth");
 
@@ -23,6 +23,10 @@ app.group("/api", (router) => {
   router.post("/astrologer/call_histroy", CallsController.call_history);
   router.group((afterAuthRouter) => {
     afterAuthRouter.use(authenticateToken);
+
+    //paymentgateway
+    afterAuthRouter.get("/payment", PaymentController.getpayment);
+    afterAuthRouter.post("/payment", PaymentController.postpayment);
 
     afterAuthRouter.post("/logout", AuthController.logout);
 

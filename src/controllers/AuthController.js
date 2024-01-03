@@ -259,7 +259,7 @@ class controllers {
 
         return res
           .status(200)
-          .json({ message: "Login Successfully", data: data });
+          .json(successResponse({ message: "Login Successfully", data: data }));
       } else if (user.user_type === "user") {
         const data = {
           Acesstoken: token,
@@ -267,14 +267,12 @@ class controllers {
         };
         return res
           .status(200)
-          .json({ message: "Login Successfully", data: data });
+          .json(successResponse({ message: "Login Successfully", data: data }));
       }
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }
   }
-
-
 
   static logout(req, res) {
     const secretKey = process.env.TOKENKEY;

@@ -9,6 +9,7 @@ const CallsController = require("@controllers/CallsController");
 
 const Usercontroller = require("@controllers/Usercontroller");
 
+
 const { authenticateToken } = require("@middleware/UserAuth");
 
 const app = Router();
@@ -63,7 +64,7 @@ app.group("/api", (router) => {
       AstrologerController.getAvailability
     );
 
-    afterAuthRouter.get(
+    afterAuthRouter.post(
       "/astrologer/requested_aproved/:id",
       AstrologerController.Astrologer_aproved_request
     );
@@ -92,12 +93,8 @@ app.group("/api", (router) => {
     afterAuthRouter.post("/user/chatroom", Usercontroller.chat_rooms);
     afterAuthRouter.get("/user/chatroom/list", Usercontroller.chat_room_list);
 
-
-//banner crud
-    afterAuthRouter.get("/user/banner/list", Usercontroller.list); 
-
-
-
+    //banner crud
+    afterAuthRouter.get("/user/banner/list", Usercontroller.list);
   });
 });
 

@@ -381,7 +381,7 @@ class Astrologer_meta {
         return res.status(400).send({ message: "Status is required" });
       }
 
-      const validStatuses = ["scheduled", "declined", "completed"];
+      const validStatuses = ["scheduled", "declined", "completed","approved"];
 
       if (!validStatuses.includes(status)) {
         return res.status(400).send({ message: "Invalid status" });

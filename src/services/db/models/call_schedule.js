@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: DataTypes.INTEGER,
       booked_by: DataTypes.INTEGER,
       datetime: DataTypes.INTEGER,
-      status: DataTypes.ENUM("requested", "scheduled", "declined", "completed"),
+      status: DataTypes.ENUM("requested", "scheduled", "declined", "completed","approved"),
       type: DataTypes.STRING,
       call_duration: DataTypes.INTEGER,
       call_rating: DataTypes.INTEGER,

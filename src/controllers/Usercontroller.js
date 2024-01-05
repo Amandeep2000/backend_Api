@@ -196,26 +196,26 @@ class Usercontroller {
 
 
 
-// static async totalamount(req, res)
-// {
-// try{
-//   const userId = req.user.user_id;
-//  const sumamount=await db.transactions(userId );
+static async totalamount(req, res)
+{
+try{
 
-//  const totalAmount = await Usercontroller.userWallet(userId );
+ const sumamount=await db.transactions.sum('amount');
+
+
   
-// return res.status(200).json(
-//   successResponse({
-//     message: "Total Balance",
-//     data:  totalAmount,
-//   })  
-// )
+return res.status(200).json(
+  successResponse({
+    message: "Total Balance",
+    data: sumamount,
+  })  
+)
 
-// }catch(e){
-//   res.status(500).json(errorResponse({ message: e.message }));
-// }
+}catch(e){
+  res.status(500).json(errorResponse({ message: e.message }));
+}
 
-// } 
+} 
 
 
 // function
@@ -224,6 +224,8 @@ static async wallet(req, res) {
   try {
        const userId = req.user.user_id;
       const totalAmount = await Usercontroller.userWallet(userId); 
+
+ 
       return res.json({userId :userId, wallet: totalAmount });
   } catch (e) {
       res.status(500).json({ message: e.message });

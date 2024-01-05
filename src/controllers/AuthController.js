@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { Sequelize, Op, DataTypes, where } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const db = require("@models/index");
 const { successResponse, errorResponse } = require("@helper/helper");
@@ -9,7 +9,25 @@ const UserRegisterRules = require("@AuthValidation/UserRegister");
 const AstrologerRegisterRules = require("@AuthValidation/AstrologerRegister");
 const MobileNumberRules = require("@AuthValidation/MobileNumberValidation");
 
-class controllers {
+class AuthController {
+  static async userWallet(userId) {
+    try {
+      const result = await db.transactions.findOne({
+        attributes: [
+          [Sequelize.fn("SUM", Sequelize.col("amount")), "totalAmount"],
+        ],
+        where: {
+          user_id: userId,
+        },
+      });
+
+      const totalAmount = result.getDataValue("totalAmount");
+      return totalAmount;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   static async UserRegister(req, res) {
     try {
       const {
@@ -244,6 +262,13 @@ class controllers {
         process.env.TOKENKEY
       );
 
+      const userId = user.id;
+      let totalAmount = await AuthController.userWallet(userId);
+
+      const userInfo = {
+        ...user.dataValues, 
+        wallet: totalAmount,
+      };
       if (user.user_type === "astrologer") {
         // Fetch astrologer meta data
         const astrologerMeta = await db.astrologer_meta.findOne({
@@ -253,8 +278,8 @@ class controllers {
         // Include astrologer meta data in the response
         const data = {
           Acesstoken: token,
-          userinfo: user,
-          astrologerMeta: astrologerMeta, // Add this line
+          userinfo: userInfo,
+          astrologerMeta: astrologerMeta,
         };
 
         return res
@@ -263,7 +288,7 @@ class controllers {
       } else if (user.user_type === "user") {
         const data = {
           Acesstoken: token,
-          userinfo: user,
+          userinfo:  userInfo,
         };
         return res
           .status(200)
@@ -303,4 +328,4 @@ class controllers {
   }
 }
 
-module.exports = controllers;
+module.exports = AuthController;

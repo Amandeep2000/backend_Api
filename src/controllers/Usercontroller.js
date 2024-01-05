@@ -10,6 +10,29 @@ const { check, validationResult } = require("express-validator");
 const { validateRating } = require("@CallsValidation/uer_review_validation");
 
 class Usercontroller {
+
+
+  static async userWallet(userId) {
+    try {
+      
+        const result = await db.transactions.findOne({
+            attributes: [
+                [Sequelize.fn('SUM', Sequelize.col('amount')),'totalAmount']
+            ],
+            where: {
+                user_id:userId,
+            }
+        });
+  
+        const totalAmount = result.getDataValue('totalAmount');
+        return totalAmount;
+  
+    } catch (e) {
+      res.status(500).json({ message: e.message }); 
+    }
+  } 
+
+
   static async history(req, res) {
     try {
       const userId = req.user.user_id;
@@ -63,7 +86,7 @@ class Usercontroller {
           user_id: userId,
           astrologer_id: astrologer_id
         },
-        include: [
+        include:[
             {
               model: db.users,
               as: "astrologer",
@@ -145,8 +168,6 @@ class Usercontroller {
   try 
   {
 
-  
-
     const  banner = await db.banners.findAll();
 
     return res.status(200).json(
@@ -169,6 +190,52 @@ class Usercontroller {
 
 
 
+
+
+
+
+
+
+// static async totalamount(req, res)
+// {
+// try{
+//   const userId = req.user.user_id;
+//  const sumamount=await db.transactions(userId );
+
+//  const totalAmount = await Usercontroller.userWallet(userId );
+  
+// return res.status(200).json(
+//   successResponse({
+//     message: "Total Balance",
+//     data:  totalAmount,
+//   })  
+// )
+
+// }catch(e){
+//   res.status(500).json(errorResponse({ message: e.message }));
+// }
+
+// } 
+
+
+// function
+ 
+static async wallet(req, res) {
+  try {
+       const userId = req.user.user_id;
+      const totalAmount = await Usercontroller.userWallet(userId); 
+      return res.json({userId :userId, wallet: totalAmount });
+  } catch (e) {
+      res.status(500).json({ message: e.message });
+  }
 }
+
+
+
+}
+
+
+
+
 
 module.exports = Usercontroller;

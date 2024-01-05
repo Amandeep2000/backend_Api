@@ -99,6 +99,9 @@ app.group("/api", (router) => {
 
     //banner crud
     afterAuthRouter.get("/user/banner/list", Usercontroller.list);
+
+    afterAuthRouter.get("/user/wallet", Usercontroller.wallet);
+
   });
 });
 

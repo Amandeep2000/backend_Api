@@ -102,6 +102,10 @@ app.group("/api", (router) => {
 
     afterAuthRouter.get("/user/wallet", Usercontroller.wallet);
 
+    afterAuthRouter.post(
+      "/user/wallet/deduct-balance",
+      Usercontroller.deduct_balance
+    );
   });
 });
 

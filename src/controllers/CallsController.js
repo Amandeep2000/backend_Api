@@ -67,6 +67,7 @@ class CallsController {
       const offset = parseInt(page - 1) * parseInt(limit);
       const orderClause = [];
 
+      const userid = req.user.user_id;
       if (order_field && order_sorting) {
         orderClause.push([order_field, order_sorting]);
       } else {
@@ -75,6 +76,7 @@ class CallsController {
 
       const allRecords = await db.call_schedule.findAll({
         order: orderClause,
+        where: { user_id:userid }, 
         include: [
           {
             model: db.users,

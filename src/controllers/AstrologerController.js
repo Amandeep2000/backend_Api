@@ -381,7 +381,7 @@ class Astrologer_meta {
         return res.status(400).send({ message: "Status is required" });
       }
 
-      const validStatuses = ["scheduled", "declined", "completed","approved"];
+      const validStatuses = ["scheduled", "declined", "completed", "approved"];
 
       if (!validStatuses.includes(status)) {
         return res.status(400).send({ message: "Invalid status" });
@@ -422,6 +422,89 @@ class Astrologer_meta {
       );
     } catch (e) {
       res.status(500).json(errorResponse({ message: e.message }));
+    }
+  }
+
+  static async astrologerHistory(req, res) {
+    try {
+      const astrologerId = req.user.user_id;
+
+      const history = await db.call_schedule.findAll({
+        where: {
+          user_id: astrologerId,
+          status: "completed",
+        },
+        include: [
+          {
+            model: db.users,
+            as: "booker",
+            attributes: ["FullName"],
+          },
+          {
+            model: db.astrologer_availabilities,
+            as: "astrologer_availabilities",
+            attributes: ["date", "time"],
+          },
+        ],
+        order: [["datetime", "DESC"]],
+      });
+
+      return res.status(200).json(
+        successResponse({
+          message: "History successfully",
+          data: history,
+        })
+      );
+    } catch (e) {
+      return res.status(500).json(errorResponse({ message: e.message }));
+    }
+  }
+
+  static async user_review_astrologer(req, res) {
+    try {
+      const { user_id } = req.params;
+
+      const reviews = await db.call_schedule.findAll({
+        where: { user_id: user_id, status: "completed" },
+        attributes: ["call_rating"],
+      });
+
+      const totalRatings = reviews.length;
+      const averageRating =
+        totalRatings > 0
+          ? reviews.reduce((acc, { call_rating }) => acc + call_rating, 0) /
+            totalRatings
+          : 0;
+
+      const ratings = {
+        excellent: 0,
+        good: 0,
+        average: 0,
+        poor: 0,
+      };
+
+      reviews.forEach((review) => {
+        if (review.call_rating === 5) ratings.excellent++;
+        else if (review.call_rating === 4) ratings.good++;
+        else if (review.call_rating === 3) ratings.average++;
+        else if (review.call_rating <= 2) ratings.poor++;
+      });
+
+      const response = {
+        averageRating:
+          totalRatings > 0 ? averageRating.toFixed(1) : "No Ratings",
+        ratings,
+        totalRatings: totalRatings,
+      };
+
+      return res.status(200).json(
+        successResponse({
+          message: "user rating for astrologer",
+          data: response,
+        })
+      );
+    } catch (e) {
+      return res.status(500).json(errorResponse({ message: e.message }));
     }
   }
 }

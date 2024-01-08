@@ -96,7 +96,7 @@ class Usercontroller {
           },
         ],
       });
-
+            
       if (existingRoom) {
         return res.status(200).json(
           successResponse({
@@ -109,6 +109,7 @@ class Usercontroller {
       const newroom = await db.chat_rooms.create({
         user_id: userId,
         astrologer_id: astrologer_id,
+        status:'active'
       });
       return res.status(200).json(
         successResponse({
@@ -133,7 +134,8 @@ class Usercontroller {
               {
                 model: db.astrologer_meta,
                 as: "AstrologerMeta",
-                attributes: ["profile_pic"],
+                attributes: ["profile_pic","Charges","charge_type"],
+
               },
             ],
           },
@@ -206,6 +208,9 @@ class Usercontroller {
       if (!user) {
         throw new Error("user not found");
       }
+      if (totalAmount <= 0) {
+        throw new Error("Balance not available");
+      }
 
       if (totalAmount < amount) {
         throw new Error("Insufficient funds");
@@ -222,6 +227,39 @@ class Usercontroller {
         successResponse({
           message: "Amount deducted and transaction recorded successfully",
           data: data,
+        })
+      );
+    } catch (e) {
+      res.status(500).json(errorResponse({ message: e.message }));
+    }
+  }
+
+  static async chatend_astrologer(req, res) {
+    try {
+      const { id } = req.params;
+      const user_Id = req.user.user_id;
+      const chatRoom = await db.chat_rooms.findOne({
+        where: {
+          id: id,
+          user_id: user_Id, 
+        },
+      });
+
+      if (!chatRoom) {
+        return res.status(404).json(
+          errorResponse({
+            message:
+              "Chat room not found or not associated with this user.",
+          })
+        );
+      }
+
+      chatRoom.status = "end";
+      await chatRoom.save();
+      return res.status(200).json(
+        successResponse({
+          message: "Chat session ended successfully",
+          data: chatRoom,
         })
       );
     } catch (e) {

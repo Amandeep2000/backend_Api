@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     {      
       user_id: DataTypes.INTEGER,
       astrologer_id: DataTypes.INTEGER,
+      status: DataTypes.ENUM("active","inactive","end"),
     },
     {
       sequelize,

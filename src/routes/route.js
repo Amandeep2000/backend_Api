@@ -78,6 +78,13 @@ app.group("/api", (router) => {
       AstrologerController.customer_support
     );
 
+    // afterAuthRouter.get(
+    //   "/astrologer/history",
+    //   AstrologerController.astrologerHistory
+    // );
+  
+
+
     afterAuthRouter.post(
       "/astrologer/schedule_call",
       CallsController.schedule_call
@@ -106,7 +113,15 @@ app.group("/api", (router) => {
       "/user/wallet/deduct-balance",
       Usercontroller.deduct_balance
     );
+
+
+    afterAuthRouter.post(
+      "/user/endchat/:id",
+      Usercontroller.chatend_astrologer
+    );
   });
+
+
 });
 
 module.exports = app;

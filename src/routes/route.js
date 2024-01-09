@@ -10,6 +10,8 @@ const CallsController = require("@controllers/CallsController");
 const Usercontroller = require("@controllers/Usercontroller");
 const PaymentController = require("@controllers/payment/PaymentController");
 
+const appController= require("@controllers/appController");
+
 const { authenticateToken } = require("@middleware/UserAuth");
 
 const app = Router();
@@ -121,6 +123,29 @@ app.group("/api", (router) => {
       "/user/endchat/:id",
       Usercontroller.chatend_astrologer
     );
+
+    
+    afterAuthRouter.get(
+      "/user/wallet/histroy",
+      Usercontroller.wallet_histroy
+    );
+
+
+    afterAuthRouter.post(
+      "/app/feedback",
+      appController.app_feedback
+    );
+    
+
+     
+    afterAuthRouter.get(
+      "/user/totalamount",
+      Usercontroller.totalamount
+    );
+
+
+
+
   });
 });
 

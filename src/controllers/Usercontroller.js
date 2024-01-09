@@ -96,7 +96,7 @@ class Usercontroller {
           },
         ],
       });
-            
+
       if (existingRoom) {
         return res.status(200).json(
           successResponse({
@@ -109,7 +109,7 @@ class Usercontroller {
       const newroom = await db.chat_rooms.create({
         user_id: userId,
         astrologer_id: astrologer_id,
-        status:'active'
+        status: "active",
       });
       return res.status(200).json(
         successResponse({
@@ -134,8 +134,7 @@ class Usercontroller {
               {
                 model: db.astrologer_meta,
                 as: "AstrologerMeta",
-                attributes: ["profile_pic","Charges","charge_type"],
-
+                attributes: ["profile_pic", "Charges", "charge_type"],
               },
             ],
           },
@@ -203,7 +202,7 @@ class Usercontroller {
       const totalAmount = await Usercontroller.userWallet(userId);
 
       const orderId = `order_${new Date().getTime()}`;
-      const { amount } = req.body;
+      const { amount, astrologerId } = req.body;
       const user = await db.users.findOne({ where: { id: userId } });
       if (!user) {
         throw new Error("user not found");
@@ -216,17 +215,25 @@ class Usercontroller {
         throw new Error("Insufficient funds");
       }
 
-      const data = await db.transactions.create({
+      const userdata = await db.transactions.create({
         user_id: userId,
         order_id: orderId,
         amount: -amount,
         type: "debit",
-        payment_status: "sucess",
+        payment_status: "payment send sucess",
       });
+
+      const astrologer = await db.transactions.create({
+        user_id: astrologerId,
+        order_id: orderId,
+        amount: amount,
+        type: "credit",
+        payment_status: "Payment received",
+      });
+
       return res.status(200).json(
         successResponse({
-          message: "Amount deducted and transaction recorded successfully",
-          data: data,
+          message: "Amount transferred successfully",
         })
       );
     } catch (e) {
@@ -241,15 +248,14 @@ class Usercontroller {
       const chatRoom = await db.chat_rooms.findOne({
         where: {
           id: id,
-          user_id: user_Id, 
+          user_id: user_Id,
         },
       });
 
       if (!chatRoom) {
         return res.status(404).json(
           errorResponse({
-            message:
-              "Chat room not found or not associated with this user.",
+            message: "Chat room not found or not associated with this user.",
           })
         );
       }
@@ -263,7 +269,38 @@ class Usercontroller {
         })
       );
     } catch (e) {
-      res.status(500).json(errorResponse({ message: e.message }));
+      return res.status(500).json(errorResponse({ message: e.message }));
+    }
+  }
+
+  static async wallet_histroy(req, res) {
+    try {
+      const userId = req.user.user_id; // Get user ID from authenticated user
+  
+    
+      const totalAmount = await Usercontroller.userWallet(userId);
+  
+    
+      const transactions = await db.transactions.findAll({
+        where: { user_id: userId },
+        order: [['createdAt', 'DESC']],
+      });
+  
+    
+      const formattedTransactions = transactions.map(t => ({
+        date: t.createdAt, 
+        description: t.description,
+        amount: parseFloat(t.amount).toFixed(2), // Format amount as a fixed decimal
+        type: t.type,
+      }));
+  
+      
+      res.json({
+        totalAmount: parseFloat(totalAmount).toFixed(2), // Include the total wallet amount formatted as a fixed decimal
+        transactions: formattedTransactions,
+      });
+    } catch (error) {
+      res.json(errorResponse(res, error.message));
     }
   }
 }

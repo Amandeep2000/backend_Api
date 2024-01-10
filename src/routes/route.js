@@ -10,7 +10,7 @@ const CallsController = require("@controllers/CallsController");
 const Usercontroller = require("@controllers/Usercontroller");
 const PaymentController = require("@controllers/payment/PaymentController");
 
-const appController= require("@controllers/appController");
+const appController = require("@controllers/appController");
 
 const { authenticateToken } = require("@middleware/UserAuth");
 
@@ -29,6 +29,10 @@ app.group("/api", (router) => {
     //paymentgateway
     afterAuthRouter.get("/payment", PaymentController.getpayment);
     afterAuthRouter.post("/payment", PaymentController.postpayment);
+
+    //othergateway
+    afterAuthRouter.get("/pay", PaymentController.getpaymentgetway);
+    // afterAuthRouter.post("/pay",PaymentController. postpaymentgetway);
 
     afterAuthRouter.post("/logout", AuthController.logout);
 
@@ -124,29 +128,31 @@ app.group("/api", (router) => {
       Usercontroller.chatend_astrologer
     );
 
-    
-    afterAuthRouter.get(
-      "/user/wallet/histroy",
-      Usercontroller.wallet_histroy
-    );
+    afterAuthRouter.get("/user/wallet/histroy", Usercontroller.wallet_histroy);
 
+    afterAuthRouter.post("/app/feedback", appController.app_feedback);
 
-    afterAuthRouter.post(
-      "/app/feedback",
-      appController.app_feedback
-    );
-    
-
-     
-    afterAuthRouter.get(
-      "/user/totalamount",
-      Usercontroller.totalamount
-    );
-
-
-
-
+    afterAuthRouter.get("/user/totalamount", Usercontroller.totalamount);
   });
 });
+
+app.get(
+  "/payment/success",
+  PaymentController.verify_payment
+);
+app.post(
+  "/payment/success",
+  PaymentController.verify_paymentpost
+);
+
+app.get("/payment/failure", (req, res) => {
+  return res.render("payment-failure");
+});
+
+app.post("/payment/failure", (req, res) => {
+  return res.render("payment-failure");
+});
+
+// app.get("/verify-payment",PaymentController.verify_payment);
 
 module.exports = app;

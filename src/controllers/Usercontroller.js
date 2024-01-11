@@ -73,12 +73,12 @@ class Usercontroller {
 
   static async chat_rooms(req, res) {
     try {
-      const userId = req.user.user_id;
-      const { astrologer_id } = req.body;
+      const astrologer_id = req.user.user_id;
+      const { user_id } = req.body;
 
       const existingRoom = await db.chat_rooms.findOne({
         where: {
-          user_id: userId,
+          user_id: user_id,
           astrologer_id: astrologer_id,
         },
         include: [

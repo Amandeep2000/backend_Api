@@ -15,6 +15,13 @@ const appController = require("@controllers/appController");
 const { authenticateToken } = require("@middleware/UserAuth");
 
 const app = Router();
+
+app.post(
+  "/payment/success",
+  authenticateToken,
+  PaymentController.verify_paymentpost
+);
+
 app.group("/api", (router) => {
   router.post("/upload", CallsController.imageuploding);
   router.post("/register/Astrologer", AuthController.AstrologerRegister);
@@ -32,6 +39,15 @@ app.group("/api", (router) => {
 
     //othergateway
     afterAuthRouter.get("/pay", PaymentController.getpaymentgetway);
+    afterAuthRouter.get("/verify-payment-on-app", PaymentController.verify_payment_user_side);
+
+
+
+    // app.get(
+    //   "/payment/success",
+    //   PaymentController.verify_payment
+    // );
+
     // afterAuthRouter.post("/pay",PaymentController. postpaymentgetway);
 
     afterAuthRouter.post("/logout", AuthController.logout);
@@ -136,14 +152,7 @@ app.group("/api", (router) => {
   });
 });
 
-app.get(
-  "/payment/success",
-  PaymentController.verify_payment
-);
-app.post(
-  "/payment/success",
-  PaymentController.verify_paymentpost
-);
+
 
 app.get("/payment/failure", (req, res) => {
   return res.render("payment-failure");

@@ -19,7 +19,11 @@ module.exports = (sequelize, DataTypes) => {
     amount: DataTypes.INTEGER,
     type: DataTypes.STRING,
     payment_status: DataTypes.STRING,
-    payment_object: DataTypes.JSON
+    payment_object: DataTypes.JSON,
+    unique_id: {
+      type: DataTypes.STRING,
+      unique: true
+    },
   }, {
     sequelize,
     modelName: 'transactions',

@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha512.js"></script>
-    <script src="https://jssdk.payu.in/bolt/bolt.min.js"></script>
+
     <title>Payment Form</title>
 </head>
 <body>
     <form action='https://test.payu.in/_payment' method='post'>
         <input type="hidden" name="key" value='gtKFFx' />
-        <input type="hidden" name="txnid" id="dynamicTxnid" value="xxadaDQx19"  /> <!-- Leave it empty for now -->
+        <input type="hidden" name="txnid"  value="<%= txnid %>" /> <!-- Leave it empty for now -->
         <input type="hidden" name="productinfo" value="iPhone" />
-        <input type="hidden" name="amount" value="10" />
+        <input type="hidden" name="amount" value="<%=amount%>" />
         <input type="hidden" name="email" value="test@gmail.com" />
         <input type="hidden" name="firstname" value="Ashish" />
         <input type="hidden" name="lastname" value="Kumar" />
-        <input type="hidden" name="surl" value="http://localhost:8000/payment/success" />
+        <input type="hidden" name="surl" value="http://localhost:8000/payment/success?token=<%= token %>>" />
         <input type="hidden" name="furl" value="http://localhost:8000/payment/failure" />
         <input type="hidden" name="phone" value="9779507225"/>
-        <input type="hidden" name="hash" value='a045228669d7b056639a22ce9cbb8d3a2a7f3669422af4bb4bc49bf5dbcdae2f9c343b5c55809fdd6af1cf9adcd7ccf69628c1fcae5b4cb0f6a0fc50a60634ee' />
+        <input type="hidden" name="hash" value="<%= hash %>" />
+        <input type="hidden" name="userToken" value="testingcutomfield" />
         <input type="submit" value="submit" /> 
     </form>
 
-    <!-- <script>
-        // Generate the dynamic txnid and set it in the form
-        const dynamicTxnid = 'txnid' + new Date().getTime();
-        document.getElementById('dynamicTxnid').value = dynamicTxnid;
-    </script> -->
+    <script>
+        function handleSubmit() {
+           
+        }
+        $(document).on('click', '#submit', function () { handleSubmit(); });
+    </script>
 </body>
 </html>
 

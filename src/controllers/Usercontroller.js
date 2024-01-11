@@ -107,7 +107,7 @@ class Usercontroller {
       }
 
       const newroom = await db.chat_rooms.create({
-        user_id: userId,
+        user_id: user_id,
         astrologer_id: astrologer_id,
         status: "active",
       });

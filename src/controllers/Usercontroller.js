@@ -124,7 +124,10 @@ class Usercontroller {
 
   static async chat_room_list(req, res) {
     try {
+      const userId = req.user.user_id;
+
       const data = await db.chat_rooms.findAll({
+        where: { user_id: userId},
         include: [
           {
             model: db.users,

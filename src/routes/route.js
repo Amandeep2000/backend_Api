@@ -39,9 +39,10 @@ app.group("/api", (router) => {
 
     //othergateway
     afterAuthRouter.get("/pay", PaymentController.getpaymentgetway);
-    afterAuthRouter.get("/verify-payment-on-app", PaymentController.verify_payment_user_side);
-
-
+    afterAuthRouter.get(
+      "/verify-payment-on-app",
+      PaymentController.verify_payment_user_side
+    );
 
     // app.get(
     //   "/payment/success",
@@ -110,6 +111,10 @@ app.group("/api", (router) => {
       AstrologerController.user_review_astrologer
     );
 
+    //walletbalance_asrologer
+    afterAuthRouter.get("/astrologer/wallet",AstrologerController.wallet);
+    afterAuthRouter.get("/astrologer/wallet/histroy",AstrologerController.wallet_histroy)
+
     afterAuthRouter.post(
       "/astrologer/schedule_call",
       CallsController.schedule_call
@@ -144,15 +149,13 @@ app.group("/api", (router) => {
       Usercontroller.chatend_astrologer
     );
 
-    afterAuthRouter.get("/user/wallet/histroy", Usercontroller.wallet_histroy);
+    afterAuthRouter.get("/user/wallet/histroy",Usercontroller.wallet_histroy);
 
     afterAuthRouter.post("/app/feedback", appController.app_feedback);
 
     afterAuthRouter.get("/user/totalamount", Usercontroller.totalamount);
   });
 });
-
-
 
 app.get("/payment/failure", (req, res) => {
   return res.render("payment-failure");

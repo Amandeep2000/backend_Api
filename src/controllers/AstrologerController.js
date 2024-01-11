@@ -6,6 +6,25 @@ const { successResponse, errorResponse } = require("@helper/helper");
 const { check, validationResult } = require("express-validator");
 
 class Astrologer_meta {
+  //astrologer Wallet
+  static async userWallet(userId) {
+    try {
+      const result = await db.transactions.findOne({
+        attributes: [
+          [Sequelize.fn("SUM", Sequelize.col("amount")), "totalAmount"],
+        ],
+        where: {
+          user_id: userId,
+        },
+      });
+
+      const totalAmount = result.getDataValue("totalAmount");
+      return totalAmount;
+    } catch (e) {
+      res.status(500).json(errorResponse({ message: e.message }));
+    }
+  }
+
   //pending
   static async Astrologer(req, res) {
     try {
@@ -505,6 +524,46 @@ class Astrologer_meta {
       );
     } catch (e) {
       return res.status(500).json(errorResponse({ message: e.message }));
+    }
+  }
+
+  static async wallet(req, res) {
+    try {
+      const userId = req.user.user_id;
+    
+
+      const totalAmount = await Astrologer_meta.userWallet(userId);
+      console.log(totalAmount);
+      return res.json({ user_id: userId, wallet: totalAmount });
+    } catch (e) {
+      res.status(500).json(errorResponse({ message: e.message }));
+    }
+  }
+
+  static async wallet_histroy(req, res) {
+    try {
+      const userId = req.user.user_id; 
+
+      const totalAmount = await Astrologer_meta.userWallet(userId);
+
+      const transactions = await db.transactions.findAll({
+        where: { user_id: userId },
+        order: [["createdAt", "DESC"]],
+      });
+
+      const formattedTransactions = transactions.map((t) => ({
+        date: t.createdAt,
+        description: t.description,
+        amount: parseFloat(t.amount).toFixed(2), // Format amount as a fixed decimal
+        type: t.type,
+      }));
+
+      res.json({
+        totalAmount: parseFloat(totalAmount).toFixed(2), // Include the total wallet amount formatted as a fixed decimal
+        transactions: formattedTransactions,
+      });
+    } catch (error) {
+      res.json(errorResponse(res, error.message));
     }
   }
 }

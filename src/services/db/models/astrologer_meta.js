@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   astrologer_meta.init({
     user_id: DataTypes.INTEGER,
-    profile_pic: DataTypes.STRING,
+    profile_pic: DataTypes.TEXT,
     status: DataTypes.ENUM('active','inactive','suspended'),
     description: DataTypes.TEXT,
     is_profile_verified: DataTypes.BOOLEAN,

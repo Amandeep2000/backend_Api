@@ -559,16 +559,22 @@ class Astrologer_meta {
         order: [[Sequelize.fn('to_char', Sequelize.col('createdAt'), 'YYYY-MM'), 'DESC']],
         raw: true,
       });
- console.log(groupedTransactions)
+ 
 
       const formattedGroupedTransactions = groupedTransactions.map(t => ({
         month: t.month,
-       
         amount: parseFloat(t.amount).toFixed(2), // Format amount as a fixed decimal
         type: t.type,
       }))
       console.log( formattedGroupedTransactions)
-      res.json(formattedGroupedTransactions)
+      // res.json(formattedGroupedTransactions)
+
+      return res.status(200).json(
+        successResponse({
+          message: "astrologer wallet-historey sucessfully",
+          data: formattedGroupedTransactions ,
+        })
+      );
 
     } catch (error) {
       res.json(errorResponse(res, error.message));

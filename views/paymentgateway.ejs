@@ -6,7 +6,7 @@
     <title>Payment Form</title>
 </head>
 <body>
-    <form action='https://test.payu.in/_payment' method='post'>
+    <form action='https://test.payu.in/_payment' name="payment_form" method='post'>
         <input type="hidden" name="key" value='gtKFFx' />
         <input type="hidden" name="txnid"  value="<%= txnid %>" /> <!-- Leave it empty for now -->
         <input type="hidden" name="productinfo" value="iPhone" />
@@ -18,15 +18,14 @@
         <input type="hidden" name="furl" value="https://api.makeitwish.com/payment/failure" />
         <input type="hidden" name="phone" value="9779507225"/>
         <input type="hidden" name="hash" value="<%= hash %>" />
-        <input type="hidden" name="userToken" value="testingcutomfield" />
+
         <input type="submit" value="submit" /> 
     </form>
 
     <script>
-        function handleSubmit() {
-           
+        window.onload = function(){
+            document.forms['payment_form'].submit();
         }
-        $(document).on('click', '#submit', function () { handleSubmit(); });
     </script>
 </body>
 </html>

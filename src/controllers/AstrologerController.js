@@ -530,7 +530,6 @@ class Astrologer_meta {
   static async wallet(req, res) {
     try {
       const userId = req.user.user_id;
-    
 
       const totalAmount = await Astrologer_meta.userWallet(userId);
       console.log(totalAmount);
@@ -540,28 +539,37 @@ class Astrologer_meta {
     }
   }
 
+ 
+
   static async wallet_histroy(req, res) {
     try {
-      const userId = req.user.user_id; 
+      const userId = req.user.user_id;
+      console.log(userId)
 
-      const totalAmount = await Astrologer_meta.userWallet(userId);
-
-      const transactions = await db.transactions.findAll({
-        where: { user_id: userId },
-        order: [["createdAt", "DESC"]],
+      const groupedTransactions = await db.transactions.findAll({ // Replace 'Transaction' with your actual model
+        where: {
+          user_id: userId,
+        },
+        attributes: [
+          [Sequelize.fn('to_char', Sequelize.col('createdAt'),'YYYY-MM'), 'month'],
+          [Sequelize.fn('SUM', Sequelize.col('amount')), 'amount'],
+          [Sequelize.fn('MAX', Sequelize.col('type')), 'type'],
+        ],
+        group: [Sequelize.fn('to_char', Sequelize.col('createdAt'), 'YYYY-MM')],
+        order: [[Sequelize.fn('to_char', Sequelize.col('createdAt'), 'YYYY-MM'), 'DESC']],
+        raw: true,
       });
+ console.log(groupedTransactions)
 
-      const formattedTransactions = transactions.map((t) => ({
-        date: t.createdAt,
-        description: t.description,
+      const formattedGroupedTransactions = groupedTransactions.map(t => ({
+        month: t.month,
+       
         amount: parseFloat(t.amount).toFixed(2), // Format amount as a fixed decimal
         type: t.type,
-      }));
+      }))
+      console.log( formattedGroupedTransactions)
+      res.json(formattedGroupedTransactions)
 
-      res.json({
-        totalAmount: parseFloat(totalAmount).toFixed(2), // Include the total wallet amount formatted as a fixed decimal
-        transactions: formattedTransactions,
-      });
     } catch (error) {
       res.json(errorResponse(res, error.message));
     }

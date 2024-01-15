@@ -1,6 +1,7 @@
 const { Sequelize, Op, DataTypes, where } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const db = require("@models/index");
+const crypto = require('crypto');
 const { successResponse, errorResponse } = require("@helper/helper");
 const { validationResult } = require("express-validator");
 const { addToInvalidatedTokens } = require("@helper/tokenmanager");
@@ -46,6 +47,7 @@ class AuthController {
         return res.status(400).json({ errors: errors.array() });
       }
 
+      const referralCode = crypto.randomBytes(8).toString('hex').slice(0,9);
       const registerUser = await db.users.create({
         FullName: FullName,
         email: email,
@@ -55,7 +57,10 @@ class AuthController {
         // social_identifier: social_identifier,
         user_type: "user",
         otp: "222333",
+        referral_code:referralCode
       });
+
+      console.log(registerUser)
 
       const userMobileNo = registerUser.mobile_number;
 
@@ -96,12 +101,16 @@ class AuthController {
 
       const { FullName, email, mobile_number } = req.body;
 
+      const referralCode = crypto.randomBytes(8).toString('hex').slice(0,9);
+     
+     
       const astrologerRegister = await db.users.create({
         FullName: FullName,
         email: email,
         mobile_number: mobile_number,
         user_type: "astrologer",
         otp: "222333",
+        referral_code:referralCode
       });
 
       const userMobileNo = astrologerRegister.mobile_numberr;

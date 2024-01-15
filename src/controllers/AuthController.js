@@ -9,6 +9,8 @@ const { loginvalidetionRules } = require("@AuthValidation/loginvalidation");
 const UserRegisterRules = require("@AuthValidation/UserRegister");
 const AstrologerRegisterRules = require("@AuthValidation/AstrologerRegister");
 const MobileNumberRules = require("@AuthValidation/MobileNumberValidation");
+const { validateAstrologerMeta } = require('@AuthValidation/astrologermeta');
+
 
 class AuthController {
   static async userWallet(userId) {
@@ -60,7 +62,7 @@ class AuthController {
         referral_code:referralCode
       });
 
-      console.log(registerUser)
+  
 
       const userMobileNo = registerUser.mobile_number;
 
@@ -99,7 +101,7 @@ class AuthController {
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const { FullName, email, mobile_number } = req.body;
+      const { FullName,email, mobile_number } = req.body;
 
       const referralCode = crypto.randomBytes(8).toString('hex').slice(0,9);
      
@@ -140,11 +142,16 @@ class AuthController {
 
   static async astrologerMeta(req, res) {
     try {
+      const transaction = await db.sequelize.transaction();
+      
       const {
         user_id,
+        FullName,
+        email,
+        mobile_number,
         is_profile_verified,
         languages,
-        experience,
+        experience,               
         Charges,
         description,
         charge_type,
@@ -152,7 +159,27 @@ class AuthController {
         expertise,
         profile_pic,
       } = req.body;
+  
 
+
+      // validatio for email mobile_number
+     
+    
+      await validateAstrologerMeta({ user_id, email, mobile_number });
+
+      await transaction.commit();
+    
+         if (FullName || email || mobile_number) {
+          await db.users.update(
+              {
+                  FullName:FullName,
+                  email:email,
+                  mobile_number: mobile_number,
+              },
+              { where:{id:user_id}}
+          );
+      }
+   
       const [astrologerUser, created] = await db.astrologer_meta.findOrCreate({
         where: { user_id: user_id },
         defaults: {
@@ -235,7 +262,8 @@ class AuthController {
     }
   }
 
-  static async login(req, res) {
+  static async login(req, res)
+  {
     try {
       //validation
       await Promise.all(
@@ -267,7 +295,7 @@ class AuthController {
       }
 
       const token = jwt.sign(
-        { user_id: user.id, mobile_number },
+        { user_id: user.id,mobile_number },
         process.env.TOKENKEY
       );
 
@@ -280,15 +308,25 @@ class AuthController {
       };
       if (user.user_type === "astrologer") {
         // Fetch astrologer meta data
-        const astrologerMeta = await db.astrologer_meta.findOne({
-          where: { user_id: user.id },
+        const RecordById = await db.users.findOne({
+          where: {user_type: "astrologer" },
+          include: [
+            {
+              model: db.astrologer_meta,
+              as: "AstrologerMeta",
+            },
+            {
+              model: db.expertise,
+              as: "astrologerexpertise",
+            },
+          ],
         });
 
         // Include astrologer meta data in the response
         const data = {
           Acesstoken: token,
           userinfo: userInfo,
-          astrologerMeta: astrologerMeta,
+          astrologerMeta: RecordById ,
         };
 
         return res

@@ -212,7 +212,6 @@ class AuthController {
       const expertiseInserted = await db.astrologer_expertises.bulkCreate(
         expertiesarray
       );
-
       res.status(200).json(successResponse({ message: "Profile updated !" }));
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
@@ -336,10 +335,13 @@ class AuthController {
     }
   }
 
-  static logout(req, res) {
+  static async logout(req, res) {
     const secretKey = process.env.TOKENKEY;
     const token = req.header("Authorization");
-
+    const id = req.user.user_id;
+    const data = await db.users.findOne({
+      where: { id: id },
+    });
     if (!token) {
       // return apiresponse(res, 400, "NO token provide");
       return res
@@ -354,6 +356,9 @@ class AuthController {
           .status(400)
           .json(errorResponse({ message: "Invalide token" }));
       }
+
+      data.status = data.status === "active" ? "inactive" : "active";
+      data.save();
 
       addToInvalidatedTokens(token);
 

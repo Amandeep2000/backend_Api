@@ -286,11 +286,11 @@ class Astrologer_meta {
 
   static async ToggleStatus(req, res) {
     try {
-      const { id } = req.params;
+      // const { id } = req.params;
       const user_Id = req.user.user_id;
 
       const astrologerdata = await db.users.findOne({
-        where: { id },
+        where: { id: user_Id },
       });
 
       if (!astrologerdata || astrologerdata.user_type !== "astrologer") {
@@ -307,7 +307,7 @@ class Astrologer_meta {
 
       return res
         .status(200)
-        .json(successResponse({ message: " status updated successfully" }));
+        .json(successResponse({ message: " status updated successfully" ,data:astrologerdata}));
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }
@@ -539,43 +539,48 @@ class Astrologer_meta {
     }
   }
 
- 
-
   static async wallet_histroy(req, res) {
     try {
       const userId = req.user.user_id;
-      console.log(userId)
+      console.log(userId);
 
-      const groupedTransactions = await db.transactions.findAll({ // Replace 'Transaction' with your actual model
+      const groupedTransactions = await db.transactions.findAll({
+        // Replace 'Transaction' with your actual model
         where: {
           user_id: userId,
         },
         attributes: [
-          [Sequelize.fn('to_char', Sequelize.col('createdAt'),'YYYY-MM'), 'month'],
-          [Sequelize.fn('SUM', Sequelize.col('amount')), 'amount'],
-          [Sequelize.fn('MAX', Sequelize.col('type')), 'type'],
+          [
+            Sequelize.fn("to_char", Sequelize.col("createdAt"), "YYYY-MM"),
+            "month",
+          ],
+          [Sequelize.fn("SUM", Sequelize.col("amount")), "amount"],
+          [Sequelize.fn("MAX", Sequelize.col("type")), "type"],
         ],
-        group: [Sequelize.fn('to_char', Sequelize.col('createdAt'), 'YYYY-MM')],
-        order: [[Sequelize.fn('to_char', Sequelize.col('createdAt'), 'YYYY-MM'), 'DESC']],
+        group: [Sequelize.fn("to_char", Sequelize.col("createdAt"), "YYYY-MM")],
+        order: [
+          [
+            Sequelize.fn("to_char", Sequelize.col("createdAt"), "YYYY-MM"),
+            "DESC",
+          ],
+        ],
         raw: true,
       });
- 
 
-      const formattedGroupedTransactions = groupedTransactions.map(t => ({
+      const formattedGroupedTransactions = groupedTransactions.map((t) => ({
         month: t.month,
         amount: parseFloat(t.amount).toFixed(2), // Format amount as a fixed decimal
         type: t.type,
-      }))
-      console.log( formattedGroupedTransactions)
+      }));
+      console.log(formattedGroupedTransactions);
       // res.json(formattedGroupedTransactions)
 
       return res.status(200).json(
         successResponse({
           message: "astrologer wallet-historey sucessfully",
-          data: formattedGroupedTransactions ,
+          data: formattedGroupedTransactions,
         })
       );
-
     } catch (error) {
       res.json(errorResponse(res, error.message));
     }

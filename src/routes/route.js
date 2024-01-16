@@ -76,7 +76,7 @@ app.group("/api", (router) => {
     );
 
     afterAuthRouter.post(
-      "/astrologer/status/:id",
+      "/astrologer/status",
       AstrologerController.ToggleStatus
     );
 
@@ -154,6 +154,9 @@ app.group("/api", (router) => {
     afterAuthRouter.post("/app/feedback", appController.app_feedback);
 
     afterAuthRouter.get("/user/totalamount", Usercontroller.totalamount);
+
+    
+    afterAuthRouter.post("/user/notification", Usercontroller.notification);
   });
 });
 

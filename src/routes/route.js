@@ -112,8 +112,11 @@ app.group("/api", (router) => {
     );
 
     //walletbalance_asrologer
-    afterAuthRouter.get("/astrologer/wallet",AstrologerController.wallet);
-    afterAuthRouter.get("/astrologer/wallet/histroy",AstrologerController.wallet_histroy)
+    afterAuthRouter.get("/astrologer/wallet", AstrologerController.wallet);
+    afterAuthRouter.get(
+      "/astrologer/wallet/histroy",
+      AstrologerController.wallet_histroy
+    );
 
     afterAuthRouter.post(
       "/astrologer/schedule_call",
@@ -130,9 +133,9 @@ app.group("/api", (router) => {
       CallsController.user_review
     );
 
-    afterAuthRouter.get("/user/history", Usercontroller.history);
-    afterAuthRouter.post("/user/chatroom", Usercontroller.chat_rooms);
-    afterAuthRouter.get("/user/chatroom/list", Usercontroller.chat_room_list);
+    afterAuthRouter.get("/user/history",Usercontroller.history);
+    afterAuthRouter.post("/user/chatroom",Usercontroller.chat_rooms);
+    afterAuthRouter.get("/user/chatroom/list",Usercontroller.chat_room_list);
 
     //banner crud
     afterAuthRouter.get("/user/banner/list", Usercontroller.list);
@@ -149,14 +152,13 @@ app.group("/api", (router) => {
       Usercontroller.chatend_astrologer
     );
 
-    afterAuthRouter.get("/user/wallet/histroy",Usercontroller.wallet_histroy);
+    afterAuthRouter.get("/user/wallet/histroy", Usercontroller.wallet_histroy);
 
     afterAuthRouter.post("/app/feedback", appController.app_feedback);
 
     afterAuthRouter.get("/user/totalamount", Usercontroller.totalamount);
-
-    
-    afterAuthRouter.post("/user/notification", Usercontroller.notification);
+    // afterAuthRouter.post("/user/notification", Usercontroller.notification);
+    afterAuthRouter.post("/user/Refer_and_earn", Usercontroller.Refer_and_earn);
   });
 });
 

@@ -6,7 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const { successResponse, errorResponse } = require("@helper/helper");
 const { check, validationResult } = require("express-validator");
-
+const Expo = require("expo-server-sdk");
 const { validateRating } = require("@CallsValidation/uer_review_validation");
 
 class Usercontroller {
@@ -127,7 +127,7 @@ class Usercontroller {
       const userId = req.user.user_id;
 
       const data = await db.chat_rooms.findAll({
-        where: { user_id: userId},
+        where: { user_id: userId },
         include: [
           {
             model: db.users,
@@ -248,6 +248,7 @@ class Usercontroller {
     try {
       const { id } = req.params;
       const user_Id = req.user.user_id;
+      console.log(user_Id);
       const chatRoom = await db.chat_rooms.findOne({
         where: {
           id: id,
@@ -279,33 +280,116 @@ class Usercontroller {
   static async wallet_histroy(req, res) {
     try {
       const userId = req.user.user_id; // Get user ID from authenticated user
-  
-    
+
       const totalAmount = await Usercontroller.userWallet(userId);
-  
-    
+
       const transactions = await db.transactions.findAll({
         where: { user_id: userId },
-        order: [['createdAt', 'DESC']],
+        order: [["createdAt", "DESC"]],
       });
-  
-    
-      const formattedTransactions = transactions.map(t => ({
-        date: t.createdAt, 
+
+      const formattedTransactions = transactions.map((t) => ({
+        date: t.createdAt,
         description: t.description,
         amount: parseFloat(t.amount).toFixed(2), // Format amount as a fixed decimal
         type: t.type,
       }));
-  
-      
-      res.json({
-        totalAmount: parseFloat(totalAmount).toFixed(2), // Include the total wallet amount formatted as a fixed decimal
-        transactions: formattedTransactions,
-      });
+
+      const data = {
+        totalAmount: parseFloat(totalAmount).toFixed(2),
+        data: formattedTransactions,
+      };
+
+      return res.status(200).json(
+        successResponse({
+          message: "user wallet-historey sucessfully",
+          data: data,
+        })
+      );
     } catch (error) {
       res.json(errorResponse(res, error.message));
     }
   }
+
+  // static async notification(req, res) {
+  //   try {
+  //     let messages = [];
+  //     //const pushTokens = await PushToken.findAll();
+  //     const somePushTokens = abcdefghijklmnopqrstuvwxyz123456;
+  //     for (let pushToken of somePushTokens) {
+  //       if (!Expo.isExpoPushToken(pushToken)) {
+  //         console.error(
+  //           `Push token ${pushToken} is not a valid Expo push token`
+  //         );
+  //         continue;
+  //       }
+
+  //       messages.push({
+  //         to: pushToken,
+  //         sound: "default",
+  //         body: "This is a test notification",
+  //         data: { withSome: "data" },
+  //       });
+  //     }
+
+  //     let chunks = expo.chunkPushNotifications(messages);
+  //     let tickets = [];
+  //     for (let chunk of chunks) {
+  //       try {
+  //         let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+  //         tickets.push(...ticketChunk);
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     }
+
+  //     res.json({ tickets });
+  //   } catch (e) {
+  //     res.json(errorResponse(res, e.message));
+  //   }
+  // }
+
+ 
+
+
+static async Refer_and_earn(req, res) {
+  try {
+    const { referralCode} = req.body;
+
+    const userId = req.user.user_id; 
+
+    const referredByUser = await db.users.findOne({
+      where: { referral_code: referralCode },
+    });
+
+    if (!referredByUser) {
+      return res.status(404).json({
+        success: false,
+        message: 'Invalid referral code. Referrer not found.',
+      });
+    }
+  
+    await db.users.update(
+      { referred_by: referredByUser.id },
+      { where: { id: userId } }
+    );
+
+ const data={
+  id: userId,
+  referred_by: referralCode
+ }
+    return res.status(200).json(
+      successResponse({
+        message: "User updated successfully with referral code",
+        data: data,
+      })
+    );
+  } catch (e) {
+   return res.json(errorResponse(res, e.message));
+  }
+}
+
+
 }
 
 module.exports = Usercontroller;

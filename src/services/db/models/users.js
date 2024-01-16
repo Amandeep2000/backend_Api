@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       status: DataTypes.ENUM("active","inactive","suspended"),
       social_identifier: DataTypes.STRING,
       user_type: DataTypes.ENUM("user", "astrologer", "admin"),
+      referred_by: DataTypes.STRING,
       referral_code: {
         type: DataTypes.STRING,
         unique: true

@@ -133,9 +133,9 @@ app.group("/api", (router) => {
       CallsController.user_review
     );
 
-    afterAuthRouter.get("/user/history",Usercontroller.history);
-    afterAuthRouter.post("/user/chatroom",Usercontroller.chat_rooms);
-    afterAuthRouter.get("/user/chatroom/list",Usercontroller.chat_room_list);
+    afterAuthRouter.get("/user/history", Usercontroller.history);
+    afterAuthRouter.post("/user/chatroom", Usercontroller.chat_rooms);
+    afterAuthRouter.get("/user/chatroom/list", Usercontroller.chat_room_list);
 
     //banner crud
     afterAuthRouter.get("/user/banner/list", Usercontroller.list);
@@ -159,6 +159,7 @@ app.group("/api", (router) => {
     afterAuthRouter.get("/user/totalamount", Usercontroller.totalamount);
     // afterAuthRouter.post("/user/notification", Usercontroller.notification);
     afterAuthRouter.post("/user/Refer_and_earn", Usercontroller.Refer_and_earn);
+    afterAuthRouter.delete("/deletaccount", Usercontroller.deletaccount);
   });
 });
 
@@ -170,6 +171,12 @@ app.post("/payment/failure", (req, res) => {
   return res.render("payment-failure");
 });
 
+app.get("/privacy-policy", (req, res) => {
+  res.render("privacyPolicy"); // This should match the name of your EJS file
+});
+app.get("/terms-and-conditions", (req, res) => {
+  res.render("termsAndConditions");
+});
 // app.get("/verify-payment",PaymentController.verify_payment);
 
 module.exports = app;

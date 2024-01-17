@@ -349,47 +349,71 @@ class Usercontroller {
   //   }
   // }
 
- 
+  static async Refer_and_earn(req, res) {
+    try {
+      const { referralCode } = req.body;
 
+      const userId = req.user.user_id;
 
-static async Refer_and_earn(req, res) {
-  try {
-    const { referralCode} = req.body;
-
-    const userId = req.user.user_id; 
-
-    const referredByUser = await db.users.findOne({
-      where: { referral_code: referralCode },
-    });
-
-    if (!referredByUser) {
-      return res.status(404).json({
-        success: false,
-        message: 'Invalid referral code. Referrer not found.',
+      const referredByUser = await db.users.findOne({
+        where: { referral_code: referralCode },
       });
+
+      if (!referredByUser) {
+        return res.status(404).json({
+          success: false,
+          message: "Invalid referral code. Referrer not found.",
+        });
+      }
+
+      await db.users.update(
+        { referred_by: referredByUser.id },
+        { where: { id: userId } }
+      );
+
+      const data = {
+        id: userId,
+        referred_by: referralCode,
+      };
+      return res.status(200).json(
+        successResponse({
+          message: "User updated successfully with referral code",
+          data: data,
+        })
+      );
+    } catch (e) {
+      return res.json(errorResponse(res, e.message));
     }
-  
-    await db.users.update(
-      { referred_by: referredByUser.id },
-      { where: { id: userId } }
-    );
-
- const data={
-  id: userId,
-  referred_by: referralCode
- }
-    return res.status(200).json(
-      successResponse({
-        message: "User updated successfully with referral code",
-        data: data,
-      })
-    );
-  } catch (e) {
-   return res.json(errorResponse(res, e.message));
   }
-}
 
+  static async deletaccount(req, res) {
+    try {
+      const id = req.user.user_id;
 
+      const userToDelete = await db.users.findByPk(id);
+
+      if (!userToDelete) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found. Account deletion failed.",
+        });
+      }
+
+      await db.users.destroy({ where: { id: id } });
+
+    
+
+      return res.status(200).json(
+        successResponse({
+          message: "User account and associated data deleted successfully.",
+         
+        })
+      );
+    } catch (e) {
+      console.error(e);
+      return res.json(errorResponse(res, e.message));
+    }
+  }
 }
 
 module.exports = Usercontroller;

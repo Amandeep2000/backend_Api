@@ -7,6 +7,7 @@ const { check, validationResult } = require("express-validator");
 const { cache } = require("ejs");
 
 class AstrologerController {
+  
   static async Astrologer_list(req, res) {
     try {
       const {
@@ -45,7 +46,7 @@ class AstrologerController {
       });
 
       const records = allRecords.slice(offset, parseInt(limit, 10) || 10);
-      return res.render("pages/Astrologerlist", {
+      return res.render("admin/Astrologerlist/list", {
         layout: `layout`,
         records: records,
       });
@@ -55,21 +56,19 @@ class AstrologerController {
     }
   }
 
-  static async    toggle_astrologer_blocking(req, res) {
+  static async toggle_astrologer_blocking(req, res) {
     try {
       const { id } = req.body; // Make sure to name your input field 'astrologerId'
-
       // const user_Id = req.user.user_id;
-
       const astrologer = await db.users.findOne({
-        where: { id :id },
+        where: { id: id },
       });
 
       if (astrologer && astrologer.user_type === "astrologer") {
         astrologer.status =
           astrologer.status === "active" ? "inactive" : "active";
         await astrologer.save();
-        res.redirect("/list");
+        res.redirect("/admin/Astrologerlist/list");
       } else {
         res.status(404).send("Astrologer not found");
       }
@@ -77,6 +76,7 @@ class AstrologerController {
       res.status(500).send(error.message);
     }
   }
+  
   static async getprofile(req, res) {
     try {
       const { id } = req.params;
@@ -102,6 +102,82 @@ class AstrologerController {
       res.render("admin/profile", { layout: `layout`, astrologer: RecordById });
     } catch (error) {
       res.status(500).render("error", { message: "Internal Server Error" });
+    }
+  }
+
+  static async get_create_astrologer(req, res) {
+    res.render("admin/Astrologerlist/create", { layout: `layout` });
+  }
+
+  static async post_create_astrologer(req, res) {
+    try {
+      const data = await db.users.create({
+        FullName: req.body.FullName,
+        email: req.body.email,
+        mobile_number: req.body.mobile_number,
+        status: req.body.status,
+      });
+
+      return res.render("admin/Astrologerlist/create", { layout: `layout` });
+    } catch (e) {
+      return res
+        .status(500)
+        .render("error", { message: "Internal Server Error" });
+    }
+  }
+
+  static async updateget(req, res) {
+    try {
+      const { id } = req.params;
+      const user = await db.users.findByPk(id);
+      if (user) {
+        return res.render("admin/Astrologerlist/update", {
+          user: user,
+          layout: "layout", // Assuming 'layout' is a template you want to use
+        });
+      } else {
+        return res.status(404).send("user not found");
+      }
+    } catch (e) {
+      res.status(500).json({ success: false, message: e.message });
+    }
+  }
+
+  static async updatePost(req, res) {
+    try {
+      const { id } = req.params;
+
+      const user = await db.users.update(
+        {
+          FullName: req.body.FullName,
+          email: req.body.email,
+          mobile_number: req.body.mobile_number,
+        },
+        {
+          where: { id: id }, // 'where' clause to identify the record to update
+        }
+      );
+
+      return res.render("admin/Astrologerlist/update", {
+        user: user,
+        layout: "layout", // Assuming 'layout' is a template you want to use
+      });
+    } catch (e) {
+      return res.status(500).json({ success: false, message: e.message });
+    }
+  }
+
+  static async delete(req, res) {
+    try {
+      const { id } = req.params;
+
+      await db.users.destroy({ where: { id } });
+      return res.json({
+        success: true,
+        message: "Astrologer deleted successfully",
+      });
+    } catch (e) {
+      res.status(500).json({ success: false, message: e.message });
     }
   }
 }

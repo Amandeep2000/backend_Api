@@ -29,10 +29,62 @@ app.group((router) => {
 
   router.group((afterAuthRouter) => {
     afterAuthRouter.use(ejsLayouts);
-    afterAuthRouter.get("/list", AstrologerControllertemp.Astrologer_list);
-    afterAuthRouter.post("/list", AstrologerControllertemp. toggle_astrologer_blocking);
-    afterAuthRouter.get("/userlist", UserControllertemp.User_list);
+    
+    afterAuthRouter.get(
+      "/admin/Astrologerlist/list",
+      AstrologerControllertemp.Astrologer_list
+    );
 
+    afterAuthRouter.post(
+      "/admin/Astrologerlist/list",
+      AstrologerControllertemp.toggle_astrologer_blocking
+    );
+
+    //Astrologer crud
+    //create
+    afterAuthRouter.get(
+      "/admin/Astrologerlist/create",
+      AstrologerControllertemp.get_create_astrologer
+    );
+
+    afterAuthRouter.post(
+      "/admin/Astrologerlist/create",
+      AstrologerControllertemp.post_create_astrologer
+    );
+
+    //update
+    afterAuthRouter.get(
+      "/admin/Astrologerlist/update/:id",
+      AstrologerControllertemp.updateget
+    );
+    afterAuthRouter.post(
+      "/admin/Astrologerlist/update/:id",
+      AstrologerControllertemp.updatePost
+    );
+
+    afterAuthRouter.delete(
+      "/admin/Astrologerlist/update/:id",
+      AstrologerControllertemp.delete
+    );
+
+    //user crud
+    afterAuthRouter.get("/admin/user/list", UserControllertemp.User_list);
+    afterAuthRouter.get(
+      "/admin/user/create",
+      UserControllertemp.get_create_user
+    );
+    afterAuthRouter.post(
+      "/admin/user/create",
+      UserControllertemp.post_create_user
+    );
+
+    afterAuthRouter.get("/admin/user/update/:id", UserControllertemp.updateget);
+    afterAuthRouter.post(
+      "/admin/user/update/:id",
+      UserControllertemp.updatePost
+    );
+
+    afterAuthRouter.delete("/admin/user/update/:id", UserControllertemp.delete);
     //expertiseList
 
     afterAuthRouter.get("/admin/expertise/list", ExpertiseController.list);
@@ -97,29 +149,20 @@ app.group((router) => {
       BannerController.updateget
     );
 
-    afterAuthRouter.post(
-      "/admin/banners/update/:id",
-      BannerController.update
-    );
-
+    afterAuthRouter.post("/admin/banners/update/:id", BannerController.update);
 
     afterAuthRouter.delete(
       "/admin/banners/update/:id",
-      BannerController. delete_banner
+      BannerController.delete_banner
     );
     // delete_banner
 
-  //astrologer profile
-  afterAuthRouter.get("/adimn/profile/:id", AstrologerControllertemp.getprofile);  
-
-
-
+    //astrologer profile
+    afterAuthRouter.get(
+      "/adimn/profile/:id",
+      AstrologerControllertemp.getprofile
+    );
   });
 });
-
-
-
-
-
 
 module.exports = app;

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form without Upload</title>
+    <style>
+      body{
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7f6; /* Adjust background color as needed */
+        align-items: center;
+      }
+
+      .form-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(12, 9, 9, 0.1);
+        width: 300px; /* You can adjust the width */
+        margin: auto auto auto 0; /* Adjust margin to push form to the left side */
+      }
+
+      .form-box h2 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        color: #333;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .file-input-container {
+        border: 2px dashed #ddd;
+        padding: 20px;
+        text-align: center;
+        border-radius: 5px;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .file-input-container:hover {
+        border-color: #3066be;
+      }
+
+      input[type="file"] {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+
+      .button-container {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: #3066be;
+        color: white;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #205493;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-box">
+      <h2>Add Astrologer</h2>
+      <form action="/admin/Astrologerlist/create" method="post">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="FullName" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div>
+          <label for="mobile">Mobile</label>
+          <input
+            type="tel"
+            id="mobile"
+            name="mobile_number"
+            required
+            pattern="[0-9]{10}"
+            title="A 10-digit mobile number is required"
+            placeholder="1234567890"
+          />
+        </div>
+
+        <div>
+          <label for="status">Status</label>
+          <select id="status" name="status" required>
+            <option value="">Please select</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="button-container">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

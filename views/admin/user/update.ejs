@@ -1,0 +1,135 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <style>
+    body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; /* Adjust background color as needed */
+    align-items: center;
+
+  }
+
+  .form-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(12, 9, 9, 0.1);
+    width: 300px; /* You can adjust the width */
+    margin: auto auto auto 0; /* Adjust margin to push form to the left side */
+  }
+
+    .form-box h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .file-input-container {
+      border: 2px dashed #ddd;
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .file-input-container:hover {
+      border-color: #3066BE;
+    }
+
+    input[type="file"] {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      background-color: #3066BE;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #205493;
+    }
+
+  </style>                                             
+</head>
+<body>
+ <body>
+  <div class="form-box">
+    <h2>Update Astrologer</h2>
+    <form action="/admin/user/update/<%= user.id %>" method="post">
+      <div class="form-group">
+        <label for="astrologerName">Name</label>
+        <input type="text" id="name" name="FullName" value="<%= user.FullName %>" required />
+      </div>
+      <div class="form-group">
+        <label for="email">email</label>
+        <input type="email" id="email" name="email" value="<%= user.email %>"  required />
+      </div>
+      <div class="form-group">
+        <label for="mobile">Mobile</label>
+        <input type="text" id="mobile" name="mobile_number" value="<%= user.mobile_number %>" required />
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <input type="text" id="status" name="status" value="<%= user.status %>" required />
+      </div>
+      <div class="button-container">
+        <button type="submit">Update</button>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>
+
+
+   
+ 
+
+
+
+
+ 
+  
+ 

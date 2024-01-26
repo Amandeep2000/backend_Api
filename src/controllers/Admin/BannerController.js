@@ -7,9 +7,7 @@ const path = require("path");
 const fs = require("fs");
 
 class BannerController {
- 
- 
-    static async create(req, res) {
+  static async create(req, res) {
     res.render("admin/banners/create", { layout: `layout` });
   }
 

@@ -98,7 +98,7 @@ class languagesController {
       const { title } = req.body;
       const language = await db.languages.update({ title }, { where: { id } });
 
-      return res.render("admin/languages/update",{
+      return res.render("admin/languages/update", {
         language: language,
         layout: "layout", // Assuming 'layout' is a template you want to use
       });

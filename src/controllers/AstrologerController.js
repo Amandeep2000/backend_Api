@@ -286,11 +286,11 @@ class Astrologer_meta {
 
   static async ToggleStatus(req, res) {
     try {
-      // const { id } = req.params;
-      const user_Id = req.user.user_id;
+       const { id } = req.params;
+     // const user_Id = req.user.user_id;
 
       const astrologerdata = await db.users.findOne({
-        where: { id: user_Id },
+        where: { id:id },
       });
 
       if (!astrologerdata || astrologerdata.user_type !== "astrologer") {
@@ -305,9 +305,12 @@ class Astrologer_meta {
         astrologerdata.status === "active" ? "inactive" : "active";
       await astrologerdata.save();
 
-      return res
-        .status(200)
-        .json(successResponse({ message: " status updated successfully" ,data:astrologerdata}));
+      return res.status(200).json(
+        successResponse({
+          message: " status updated successfully",
+          data: astrologerdata,
+        })
+      );
     } catch (e) {
       res.status(400).json(errorResponse({ message: e.message }));
     }
@@ -588,3 +591,4 @@ class Astrologer_meta {
 }
 
 module.exports = Astrologer_meta;
+ 

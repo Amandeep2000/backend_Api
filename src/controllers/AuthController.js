@@ -299,7 +299,7 @@ class AuthController {
       };
       if (user.user_type === "astrologer") {
         const RecordById = await db.users.findOne({
-          where: { user_type: "astrologer", id: user.id },
+          where: { user_type: "astrologer",id: user.id },
           include: [
             {
               model: db.astrologer_meta,
@@ -315,7 +315,7 @@ class AuthController {
         const data = {
           Acesstoken: token,
           userinfo: userInfo,
-          astrologerMeta: RecordById,
+          data: RecordById,
         };
 
         return res

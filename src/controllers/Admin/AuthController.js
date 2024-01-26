@@ -29,7 +29,10 @@ class AuthController {
         if (!user) {
             return errorResponse(res, 401, "Invalid Email Address!");
         }
-        
+
+
+        console.log(user)
+        console.log(user.password)
         const isPasswordValid = await bcrypt.compare(password, user.password);
         
         if (!isPasswordValid) {
@@ -47,7 +50,7 @@ class AuthController {
         // .status(200)
         // .json(successResponse({ message: "Login Sucessfully", data: data }));
 
-        return res.redirect('/list'); 
+        return res.redirect('admin/Astrologerlist/list'); 
 
     } catch (e) {
       console.error(e); // Log the error

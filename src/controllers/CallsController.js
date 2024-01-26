@@ -76,7 +76,7 @@ class CallsController {
 
       const allRecords = await db.call_schedule.findAll({
         order: orderClause,
-        where: { user_id:userid }, 
+        where: { user_id: userid },
         include: [
           {
             model: db.users,
@@ -103,23 +103,63 @@ class CallsController {
 
   static async call_history(req, res) {
     try {
-      const { to, from } = req.body;
+      // const { to, from } = req.body;
 
-      const call = await client.calls.create({
-        url: "http://demo.twilio.com/docs/voice.xml",
-        to: to,
-        from: from,
-      });
-      const callHistoryEntry = await db.call_histories.create({
-        to: call.to,
-        from: call.from,
-        url: call.url,
-      });
+      // const call = await client.calls.create({
+      //   url: "http://demo.twilio.com/docs/voice.xml",
+      //   to: to,
+      //   from: from,
+      // });
+      // const callHistoryEntry = await db.call_histories.create({
+      //   to: call.to,
+      //   from: call.from,
+      //   url: call.url,
+      // });
 
-      res.status(200).json({
-        success: true,
-        message: "Call initiated and logged successfully",
-        data: callHistoryEntry,
+      // res.status(200).json({
+      //   success: true,
+      //   message: "Call initiated and logged successfully",
+      //   data: callHistoryEntry,
+      // });
+
+      const { callerUserId, calleeUserId } = req.body;
+
+      // Look up the users in the database
+      const caller = await db.users.findByPk(callerUserId);
+      const callee = await db.users.findByPk(calleeUserId);
+
+      if (!caller || !callee) {
+        return res
+          .status(404)
+          .json({ message: "One or both users not found." });
+      }
+
+      // Create a proxy session
+      const session = await db.twilioClient.proxy
+        .services(process.env.TWILIO_PROXY_SERVICE_SID)
+        .sessions.create({ uniqueName: `Session_${Date.now()}` });
+
+      // Add the caller to the session
+      await twilioClient.proxy
+        .services(process.env.TWILIO_PROXY_SERVICE_SID)
+        .sessions(session.sid)
+        .participants.create({
+          identifier: caller.phoneNumber, // Assuming your user model has a phoneNumber field
+          friendlyName: caller.fullName,
+        });
+
+      // Add the callee to the session
+      await twilioClient.proxy
+        .services(process.env.TWILIO_PROXY_SERVICE_SID)
+        .sessions(session.sid)
+        .participants.create({
+          identifier: callee.phoneNumber,
+          friendlyName: callee.fullName,
+        });
+
+      return res.status(200).json({
+        message: "Call initiated successfully.",
+        sessionSid: session.sid,
       });
     } catch (e) {
       res.status(500).json(errorResponse({ message: e.message }));

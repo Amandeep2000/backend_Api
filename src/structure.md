@@ -32,3 +32,29 @@ root directory -> companey01
 env
 use in all folder
 process.env.name 
+
+
+
+
+
+
+
+
+
+hun eh dekho v records nu month created_at ch jo month h, os month nal group kiven kr skde aan
+
+
+
+
+
+10:36
+local te 6 records create krlo manually
+10:37
+saare records 2-2-2 de group ch bnaio
+1 month de 2 records
+
+
+
+
+
+

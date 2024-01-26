@@ -76,7 +76,7 @@ app.group("/api", (router) => {
     );
 
     afterAuthRouter.post(
-      "/astrologer/status",
+      "/astrologer/status/:id",
       AstrologerController.ToggleStatus
     );
 
@@ -174,6 +174,7 @@ app.post("/payment/failure", (req, res) => {
 app.get("/privacy-policy", (req, res) => {
   res.render("privacyPolicy"); // This should match the name of your EJS file
 });
+
 app.get("/terms-and-conditions", (req, res) => {
   res.render("termsAndConditions");
 });
